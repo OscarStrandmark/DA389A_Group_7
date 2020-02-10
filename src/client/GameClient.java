@@ -12,12 +12,7 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import gui.ExtendedJLabel;
 import gui.ViewerListener;
-import server.GameServer;
 
 /**
  * 
@@ -89,7 +84,7 @@ public class GameClient implements Serializable{
 	}
 	
 	/**
-	 * Creates a new class "Connection" with will connect to the server
+	 * Creates a new class "Connection" which will connect to the server
 	 * 
 	 * @param	String	serverIp
 	 * @param	int		port
@@ -100,7 +95,7 @@ public class GameClient implements Serializable{
 	}
 	
 	/**
-	 * Adds a listener to the listener list
+	 * Adds a listener to the listener list. 
 	 * 
 	 * @param	ViewerListener	listener
 	 */
@@ -176,7 +171,7 @@ public class GameClient implements Serializable{
 	public boolean jumpDice() {
 		Random rand = new Random();
 		int roll = rand.nextInt(6)+1;
-		if(roll == 1|| roll == 2 || roll == 3 || roll == 4){
+		if(roll < 5){
 			return true;
 		}
 		return false;
@@ -197,30 +192,34 @@ public class GameClient implements Serializable{
 	}
 
 	/**
-	 * Method to enable buttons in ClientFrame
+	 * Method to enable buttons in ClientFrame. Called at the beginning of the players turn. 
 	 * 
 	 * @param	enableButtons	boolean
 	 */
 	
 	public void enableButtons(boolean enableButtons) {
 		shotTakenThisTurn = false;
+		//If user is not in the water, aka on land
 		if (!map[characterMap.get(username).getRow()][characterMap.get(username).getCol()].getName().equals("Water")) {
 			for (ViewerListener listener : listeners) {
 				listener.updateViewer();
 			}
 
+			//If player can jump
 			if (map[characterMap.get(username).getRow()][characterMap.get(username).getCol()].getName().equals("Special")) {
 				for (ViewerListener listener : listeners) {
 					listener.enableButtons("jump");
 				}
 			}
 
+			//If player can shoot
 			if (!lookingForAShot(characterMap.get(username)).isEmpty()) {
 				for (ViewerListener listener : listeners) {
 					listener.enableButtons("shoot");
 				}
 			}
 			
+			//Picks up the treasure if you are standing on it. 
 			if(map[characterMap.get(username).getRow()][characterMap.get(username).getCol()].getTreasure()){
 				map[characterMap.get(username).getRow()][characterMap.get(username).getCol()].treasureOff();
 				characterMap.get(username).giveTreasure();
@@ -230,6 +229,7 @@ public class GameClient implements Serializable{
 				}
 			}
 			
+			//Check if player is on boat tile. 
 			if(characterMap.get(username).hasTreasure() && map[characterMap.get(username).getRow()][characterMap.get(username).getCol()].getBoat()){
 				connection.victory();
 				System.out.println("Client: " + username + " har vunnigt!");
@@ -256,6 +256,7 @@ public class GameClient implements Serializable{
 			listener.setWaterIcon(me.getCharacterName());
 		}
 		
+		//Check if user can be put on land near, 
 		if (map[me.getRow() - 1][me.getCol()].getAccessible()) {
 			canJump = true;
 		}
@@ -305,14 +306,14 @@ public class GameClient implements Serializable{
 
 	public void jump() {
 		map[characterMap.get(username).getRow()][characterMap.get(username).getCol()].removeCharacter();
-		if (jumpDice()) {
+		if (jumpDice()) { //If diceroll succeeds, jump. 
 			characterMap.get(username).setPos(characterMap.get(username).getRow()
 					+ map[characterMap.get(username).getRow()][characterMap.get(username).getCol()].successRow(),
 					characterMap.get(username).getCol()
 							+ map[characterMap.get(username).getRow()][characterMap.get(username).getCol()]
 									.successCol());
 
-		} else {
+		} else { //Do not jump
 			characterMap.get(username).setPos(characterMap.get(username).getRow() + map[characterMap.get(username).getRow()][characterMap.get(username).getCol()].failRow(), 
 					characterMap.get(username).getCol() + map[characterMap.get(username).getRow()][characterMap.get(username).getCol()].failCol());
 		}
@@ -334,8 +335,6 @@ public class GameClient implements Serializable{
 			listener.enableButtons("disable shoot");
 		}
 		shotTakenThisTurn = true;
-		
-		
 		
 		if (!lookingForAShot(characterMap.get(username)).isEmpty()) {
 			System.out.println("Shot-attempt taken by: " + username);
@@ -395,7 +394,7 @@ public class GameClient implements Serializable{
 	* Inner class that handles the connection between client and server
 	*/
 	
-	private class Connection extends Thread{
+	private class Connection extends Thread {
 		private String ipAddress = "";
 		private int port = 0;
 		boolean svullo;
@@ -444,7 +443,8 @@ public class GameClient implements Serializable{
 			while(!Thread.interrupted()){
 				try{
 					Object object = input.readObject();
-					if(object instanceof Integer){
+
+					if(object instanceof Integer){ //Set a character. 
 						int row = (int)object;
 						int col =  (int)input.readObject();
 						map[row][col].removeSleepingCharacter();
@@ -587,7 +587,7 @@ public class GameClient implements Serializable{
 							}
 						}else if(object.equals("steal pieces")){
 							characterMap.get(input.readObject()).setPieces(0);
-						}else{
+						}else{ //Else seems dangerous, change in case maybe?
 							for(ViewerListener listener: listeners){
 								System.out.println("Client: mottagit ny user/users uppdaterar \"ConnectedUserList\"");
 								listener.removeConnectedUsers();
@@ -662,7 +662,7 @@ public class GameClient implements Serializable{
 		 * @param	Chartacter	character
 		 */
 		
-		public void flushCharacter(client.Character character){
+		public void flushCharacter(client.Character character){ //TODO: Change name of this shit method. 
 			try{
 				output.writeObject(character);
 				output.flush();
@@ -956,11 +956,13 @@ public class GameClient implements Serializable{
 			}
 		}
 		
+		//TODO: What the fuck? Move to its own class. Please.
+
 		//------Water Tile-----------------
 		map[5][25].setNext(0, 1);
 		map[5][26].setNext(0, 1);
 		map[5][27].setNext(0, 1);
-		map[4][27].setNext(1, 1); //
+		map[4][27].setNext(1, 1);
 		map[5][28].setNext(1, 0);
 		map[6][28].setNext(4, 0);
 		map[10][28].setNext(0, 1);

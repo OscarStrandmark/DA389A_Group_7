@@ -3,18 +3,12 @@ package server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.text.AbstractDocument.BranchElement;
-
-import client.Tile;
 import gui.ServerFrame;
 
 /**
@@ -40,9 +34,9 @@ public class GameServer implements Runnable{
 	private boolean markisenAvailable = true;
 	private boolean hookAvailable = true;
 	
-	private int counter = 1;
-	private int id = 1;
-	private int treasurePos = 0;
+	private int counter = 1; //Whose turn it is
+	private int id = 1; // OF WHO
+	private int treasurePos = 0; 
 	
 	/**
 	 * Constructor starts up the server
@@ -68,7 +62,7 @@ public class GameServer implements Runnable{
 	public void run() {
 		System.out.println("Server running...");
 		System.out.println("Server: Listening for clients...");
-		while(true){
+		while(true){ //TODO: Change to variable
 			try{
 				Socket socket = serverSocket.accept();
 				if (clientMap.size() <= 6){
@@ -103,13 +97,13 @@ public class GameServer implements Runnable{
 	
 	private class ClientHandler extends Thread{
 		private Socket socket;
-		ObjectInputStream input;
-		ObjectOutputStream output;
-		private String sInput;
+		public ObjectInputStream input;
+		public ObjectOutputStream output;
+		private String sInput; //?
 		private String username;
-		private String character;
+		private String character; //Name of character?
 		private int nbrOfPlayers;
-		private int playerid;
+		private int playerid; //Id of player
 		private CountDown cd = new CountDown(this);
 		
 		/**
@@ -138,11 +132,16 @@ public class GameServer implements Runnable{
 					Object object = input.readObject();
 					if(object instanceof String){
 						sInput = (String)object;
+
+						//TODO: Switch-case
+
 						if(sInput.equals("ENDTURN")){
-							cd.suspend();
+							//Handles turn order. 
+							cd.suspend(); //Puts CD thread on hold
 							clientsTurn(true);
 						}else if(sInput.equals("set character")){
 							
+							//Sets a character as already picked and cannot be chosen by others.
 							
 							character = (String)input.readObject();
 							
@@ -164,7 +163,7 @@ public class GameServer implements Runnable{
 							if(character.equals("Hook")){
 								hookAvailable = false;
 							}
-							for (ClientHandler ch : clientMap.values()) {
+							for (ClientHandler ch : clientMap.values()) {//Notifies players about what character have been picked
 								ch.output.writeObject("updateUserInfo");
 								ch.output.writeBoolean(svulloAvailable);
 								ch.output.writeBoolean(tjoPangAvailable);
@@ -177,14 +176,14 @@ public class GameServer implements Runnable{
 							}
 							
 							
-						}else if(sInput.equals("show treasure")){
-							int player;
+						}else if(sInput.equals("show treasure")){ //When player has found treasure, give its position to that player
+							int player; //Player that has found the treasure
 							if(counter == 1){
 								player = clientMap.size();
 							}else{
 								player = counter -1;
 							}
-							if(treasurePos == 0){
+							if(treasurePos == 0){ //Generate position of treasure when it is first found. 
 								Random rand = new Random();
 								treasurePos = rand.nextInt(9)+1;
 							}
@@ -199,23 +198,27 @@ public class GameServer implements Runnable{
 								ch.output.flush();
 							}
 						}else if(sInput.equals("pieces stolen")){
-							client.Character tempChar = characterMap.get((String)input.readObject());
-							tempChar.setPieces(0);
-							for (ClientHandler ch : clientMap.values()){
+							client.Character tempChar = characterMap.get((String)input.readObject()); //Person whose pieces have been stolen
+							tempChar.setPieces(0); //Player now has 0 pieces.
+							for (ClientHandler ch : clientMap.values()){ //Tell all other clients a persons pieces have been stolen.
 								ch.output.writeObject("steal pieces");
 								ch.output.writeObject(tempChar.getName());
 								ch.output.flush();
 							}
-						}else if(sInput.equals("victory")){
+						}else if(sInput.equals("victory")){ 
 							String winner = (String) input.readObject();
 							for (ClientHandler ch : clientMap.values()) {
 								ch.output.writeObject("winner");
 								ch.output.writeObject(winner);
+								//TODO: LOCK PLAYER BUTTONS
 								ch.output.flush();
 							}
 				
 						}else {
 						
+							//Only having else seems dangerous. 
+
+							//Accepts a new client to the game server. 
 							System.out.println("Server: Mottagit username");
 							clientMap.put(sInput, this);
 							clientMapid.put(id, sInput);
@@ -239,6 +242,7 @@ public class GameServer implements Runnable{
 								
 							}
 							
+							//Shows the newly connected user which characters can be chosen.
 							this.output.writeObject("Choose character");
 							this.output.writeBoolean(svulloAvailable);
 							this.output.writeBoolean(tjoPangAvailable);
@@ -252,6 +256,7 @@ public class GameServer implements Runnable{
 
 					}
 					if(object instanceof client.Character) {
+						//Synchronizing of characters. 
 						client.Character character = (client.Character) object;
 						updateCharPos(character);
 					}
@@ -289,7 +294,7 @@ public class GameServer implements Runnable{
 			
 			public CountDown(ClientHandler ch){
 				clienthandler = ch;
-				counter = 60;
+				counter = 60; //Less time maybe?
 			}
 			
 			/**
@@ -344,25 +349,25 @@ public class GameServer implements Runnable{
 		public void clientsTurn(boolean enableButtons){
 			nbrOfPlayers = clientMap.size();
 			System.out.println("Server: sleeping variabeln: " + characterMap.get(clientMapid.get(counter)).sleeping());
-			while(characterMap.get(clientMapid.get(counter)).sleeping() != 0){
-				ClientHandler ch = clientMap.get(clientMapid.get(counter));
-				client.Character charr = characterMap.get(clientMapid.get(counter));
-				charr.passATurn();
+			while(characterMap.get(clientMapid.get(counter)).sleeping() != 0){ //While player is shot.
+				ClientHandler ch = clientMap.get(clientMapid.get(counter)); //Get clientHandler of player whose turn it is
+				client.Character charr = characterMap.get(clientMapid.get(counter)); //Get their character object
+				charr.passATurn(); //Reduce counter for after being shot cooldown.
 				try {
 					System.out.println("SERVER: Värde på counter i clientsTurn: " + counter);
 					System.out.println("SERVER: Character-objekt: " + charr);
-					ch.output.writeObject(charr);
+					ch.output.writeObject(charr); //Sync server character object with clients character object. 
 					ch.output.flush();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 				if (characterMap.get(clientMapid.get(counter)).sleeping() == 0){
 					for(int i = 1; i <= nbrOfPlayers; i++){
-						String username = clientMapid.get(i);
-						ch = clientMap.get(username);
+						String username = clientMapid.get(i); //Get username
+						ch = clientMap.get(username); //Get ClientHandler from a username
 						try {
 							System.out.println("SERVER: sleeping variabel: " + characterMap.get(clientMapid.get(counter)).sleeping() + " användare: " + username);
-							ch.output.writeObject(characterMap.get(username).getRow());
+							ch.output.writeObject(characterMap.get(username).getRow()); 
 							ch.output.writeObject(characterMap.get(username).getCol());
 							ch.output.writeObject(charr);
 							ch.output.flush();
@@ -383,7 +388,7 @@ public class GameServer implements Runnable{
 			String username = clientMapid.get(counter);
 			ClientHandler ch = clientMap.get(username);
 			try {
-				ch.output.writeObject("Enable buttons");
+				ch.output.writeObject("Enable buttons"); //????? why is this on the server???
 				ch.output.writeBoolean(enableButtons);
 				ch.output.flush();
 				ch.cd.resume();
@@ -482,7 +487,7 @@ public class GameServer implements Runnable{
 		}
 		
 		/**
-		 * Send out a character that has been change to all clients
+		 * Send out a character that has been updated to all clients
 		 * 
 		 * @param	Character	charr
 		 */
