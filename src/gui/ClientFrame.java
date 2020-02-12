@@ -691,6 +691,16 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 		}
 	}
 	
+
+	public void disableButtons(){
+		bMove.setEnabled(false);
+		bShoot.setEnabled(false);
+		bUp.setEnabled(false);
+		bDown.setEnabled(false);
+		bLeft.setEnabled(false);
+		bRight.setEnabled(false);
+		bEndTurn.setEnabled(false);
+	}
 	/**
 	 * Action Listener
 	 */

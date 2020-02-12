@@ -436,6 +436,7 @@ public class GameClient implements Serializable{
 				input = new ObjectInputStream(socket.getInputStream());
 				output.writeObject(username);
 				output.flush();
+				socket.setSoTimeout(25000);
 			}catch (IOException e ){
 				e.printStackTrace();
 			}
@@ -490,7 +491,10 @@ public class GameClient implements Serializable{
 							System.out.println("VI HAR EN VINNARE!!");
 							for(ViewerListener listener: listeners){
 								listener.showVictory((String)input.readObject());
+								listener.disableButtons();
 							}
+
+							
 							
 							disconnect();
 						}	
