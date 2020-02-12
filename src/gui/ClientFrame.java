@@ -805,16 +805,28 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_UP){
-			client.moveCharacter(username.getText(), "Up");
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				client.moveCharacter(username.getText(), "Up");
+				lastActionAt = System.currentTimeMillis();
+			}
 		}
 		if(code == KeyEvent.VK_DOWN){
-			client.moveCharacter(username.getText(), "Down");
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				client.moveCharacter(username.getText(), "Down");
+				lastActionAt = System.currentTimeMillis();
+			}
 		}
 		if(code == KeyEvent.VK_LEFT){
-			client.moveCharacter(username.getText(), "Left");
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				client.moveCharacter(username.getText(), "Left");
+				lastActionAt = System.currentTimeMillis();
+			}
 		}
 		if(code == KeyEvent.VK_RIGHT){
-			client.moveCharacter(username.getText(), "Right");
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				client.moveCharacter(username.getText(), "Right");
+				lastActionAt = System.currentTimeMillis();
+			}
 		}
 //		if(code == KeyEvent.VK_ENTER){
 //			client.endTurn();
