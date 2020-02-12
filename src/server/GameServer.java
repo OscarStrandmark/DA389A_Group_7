@@ -37,6 +37,9 @@ public class GameServer implements Runnable{
 	private int counter = 1; //Whose turn it is
 	private int id = 1; // OF WHO
 	private int treasurePos = 0; 
+
+	//Controls stopping accepting connections after game has started
+	private boolean gameStarted = true;
 	
 	/**
 	 * Constructor starts up the server
@@ -62,7 +65,7 @@ public class GameServer implements Runnable{
 	public void run() {
 		System.out.println("Server running...");
 		System.out.println("Server: Listening for clients...");
-		while(true){ //TODO: Change to variable
+		while(!gameStarted){
 			try{
 				Socket socket = serverSocket.accept();
 				if (clientMap.size() <= 6){
@@ -74,7 +77,8 @@ public class GameServer implements Runnable{
 			}catch(IOException e){
 				e.printStackTrace();
 			}
-		}		
+		}
+		System.out.println("Server not accepting any more connections to gameserver.");	
 	}
 	
 	/**
@@ -82,6 +86,9 @@ public class GameServer implements Runnable{
 	 */
 	
 	public void startGame(){
+
+		//Stop accepting connections to gameserver.
+		gameStarted = true;
 		System.out.println("Server: starta spelet på servern "+id);
 		for(int i = 1; i < id; i++){
 			clientMap.get(clientMapid.get(i)).createCharacter(clientMapid.get(i));
