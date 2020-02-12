@@ -133,7 +133,7 @@ public class GameServer implements Runnable{
 		public void run() {
 			while(socket.isConnected()){
 				try{
-					Object object = input.readObject();
+					Object object = input.readObject(); //Change to take from queue
 					if(object instanceof String){
 						sInput = (String)object;
 
@@ -264,7 +264,7 @@ public class GameServer implements Runnable{
 						client.Character character = (client.Character) object;
 						updateCharPos(character);
 
-						
+
 					}
 					
 				}catch (IOException | ClassNotFoundException e) {
