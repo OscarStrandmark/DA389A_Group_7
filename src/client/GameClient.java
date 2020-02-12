@@ -226,7 +226,6 @@ public class GameClient implements Serializable{
 				System.out.println("Client: " + username + " har tagit upp skatten");
 				for (ViewerListener listener : listeners) {
 					listener.setIconSleep("Treasure", false);
-					listener.updateInfoRutaTreasure("du! Ta dig till en båt!");
 				}
 				characterMap.get(username).takeTreasure();
 				connection.flushCharacter(characterMap.get(username));
@@ -439,7 +438,6 @@ public class GameClient implements Serializable{
 				input = new ObjectInputStream(socket.getInputStream());
 				output.writeObject(username);
 				output.flush();
-				socket.setSoTimeout(25000);
 			}catch (IOException e ){
 				e.printStackTrace();
 			}
@@ -484,7 +482,7 @@ public class GameClient implements Serializable{
 						}
 						if(character.hasTreasure() == true){
 							for(ViewerListener listener: listeners){
-								listener.updateInfoRutaTreasure(character.getName());
+								listener.updateInfoRutaTreasure(character.getName() + "\n");
 							}
 						}
 						System.out.println("CLIENT: mottaget Character-objekts sleeping: " + character.sleeping());
