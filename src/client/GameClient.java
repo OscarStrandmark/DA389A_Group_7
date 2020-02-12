@@ -226,7 +226,10 @@ public class GameClient implements Serializable{
 				System.out.println("Client: " + username + " har tagit upp skatten");
 				for (ViewerListener listener : listeners) {
 					listener.setIconSleep("Treasure", false);
+					listener.updateInfoRutaTreasure("du! Ta dig till en båt!");
 				}
+				characterMap.get(username).takeTreasure();
+				connection.flushCharacter(characterMap.get(username));
 			}
 			
 			//Check if player is on boat tile. 
@@ -479,6 +482,11 @@ public class GameClient implements Serializable{
 								listener.setIconSleep(character.getCharacterName(), true);
 							}
 						}
+						if(character.hasTreasure() == true){
+							for(ViewerListener listener: listeners){
+								listener.updateInfoRutaTreasure(character.getName());
+							}
+						}
 						System.out.println("CLIENT: mottaget Character-objekts sleeping: " + character.sleeping());
 						updateCharacter(character);
 					}
@@ -493,9 +501,6 @@ public class GameClient implements Serializable{
 								listener.showVictory((String)input.readObject());
 								listener.disableButtons();
 							}
-
-							
-							
 							disconnect();
 						}	
 						else if(object.equals("treasure position")){
@@ -659,6 +664,8 @@ public class GameClient implements Serializable{
 				e.printStackTrace();
 			}
 		}
+
+
 		
 		/**
 		 * Sends a character to the server
