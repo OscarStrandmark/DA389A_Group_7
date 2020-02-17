@@ -11,7 +11,6 @@ import java.util.Random;
 
 import gui.ServerFrame;
 import shared.Buffer;
-import shared.ObjectReciever;
 
 /**
  * 
@@ -40,7 +39,7 @@ public class GameServer implements Runnable{
 	private int id = 1; // OF WHO
 	private int treasurePos = 0;
 
-	private ObjectReciever or; //Handles accepting objects from the clients.
+	private ServerObjectReciever or; //Handles accepting objects from the clients.
 	private Buffer<Object> buffer;
 	
 	/**
@@ -137,7 +136,7 @@ public class GameServer implements Runnable{
 		
 		public void run() {
 			buffer = new Buffer<Object>();
-			or = new ObjectReciever(input,buffer);
+			or = new ServerObjectReciever(input,buffer);
 
 			while(socket.isConnected()){
 				try{
