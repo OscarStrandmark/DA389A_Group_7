@@ -144,6 +144,9 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 	private GameClient client;
 	
 	private String target = "";
+
+	private long lastActionAt = System.currentTimeMillis();
+
 	
 	/**
 	 * Constructor that sets up the visual for the client
@@ -745,24 +748,41 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 			enableButtons("disable all");
 		}
 		if (e.getSource() == bLeft) {
-			frame.requestFocus();	
-			client.moveCharacter(username.getText(), "Left");
-			System.out.println("ClientFrame: Left");
+
+
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				frame.requestFocus();	
+				client.moveCharacter(username.getText(), "Left");
+				System.out.println("ClientFrame: Left");
+				lastActionAt = System.currentTimeMillis();
+			}
+			
 		}
 		if (e.getSource() == bRight) {
-			frame.requestFocus();
-			client.moveCharacter(username.getText(), "Right");
-			System.out.println("ClientFrame: Right");
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				frame.requestFocus();
+				client.moveCharacter(username.getText(), "Right");
+				System.out.println("ClientFrame: Right");
+				lastActionAt = System.currentTimeMillis();
+			}
+			
 		}
 		if (e.getSource() == bUp) {
-			frame.requestFocus();
-			client.moveCharacter(username.getText(), "Up");
-			System.out.println("ClientFrame: Up");
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				frame.requestFocus();
+				client.moveCharacter(username.getText(), "Up");
+				System.out.println("ClientFrame: Up");
+				lastActionAt = System.currentTimeMillis();
+			}
+			
 		}
 		if (e.getSource() == bDown) {
-			frame.requestFocus();
-			client.moveCharacter(username.getText(), "Down");
-			System.out.println("ClientFrame: Down");
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				frame.requestFocus();
+				client.moveCharacter(username.getText(), "Down");
+				System.out.println("ClientFrame: Down");
+				lastActionAt = System.currentTimeMillis();
+			}
 		}
 		if (e.getSource() == chooseChar){
 			
@@ -786,16 +806,28 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_UP){
-			client.moveCharacter(username.getText(), "Up");
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				client.moveCharacter(username.getText(), "Up");
+				lastActionAt = System.currentTimeMillis();
+			}
 		}
 		if(code == KeyEvent.VK_DOWN){
-			client.moveCharacter(username.getText(), "Down");
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				client.moveCharacter(username.getText(), "Down");
+				lastActionAt = System.currentTimeMillis();
+			}
 		}
 		if(code == KeyEvent.VK_LEFT){
-			client.moveCharacter(username.getText(), "Left");
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				client.moveCharacter(username.getText(), "Left");
+				lastActionAt = System.currentTimeMillis();
+			}
 		}
 		if(code == KeyEvent.VK_RIGHT){
-			client.moveCharacter(username.getText(), "Right");
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				client.moveCharacter(username.getText(), "Right");
+				lastActionAt = System.currentTimeMillis();
+			}
 		}
 //		if(code == KeyEvent.VK_ENTER){
 //			client.endTurn();

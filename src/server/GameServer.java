@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Random;
 
 import gui.ServerFrame;
+import shared.Buffer;
+import shared.ObjectReciever;
 
 /**
  * 
@@ -36,13 +38,16 @@ public class GameServer implements Runnable{
 	
 	private int counter = 1; //Whose turn it is
 	private int id = 1; // OF WHO
-	private int treasurePos = 0; 
+	private int treasurePos = 0;
+
+	private ObjectReciever or; //Handles accepting objects from the clients.
+	private Buffer<Object> buffer;
 	
 	/**
 	 * Constructor starts up the server
 	 * 
-	 * @param 	int			port
-	 * @param	ServerFrame	ui
+	 * @param 	{@Link int} port
+	 * @param	{@Link ServerFrame}	ui
 	 */
 	
 	public GameServer(int port, ServerFrame ui){
@@ -113,7 +118,7 @@ public class GameServer implements Runnable{
 		/**
 		 * Constructor starts up a output stream and a input stream
 		 * 
-		 * @param	Soket	socket
+		 * @param {@Link Socket} socket
 		 */
 		
 		public ClientHandler(Socket socket) {
@@ -131,9 +136,12 @@ public class GameServer implements Runnable{
 		 */
 		
 		public void run() {
+			buffer = new Buffer<Object>();
+			or = new ObjectReciever(input,buffer);
+
 			while(socket.isConnected()){
 				try{
-					Object object = input.readObject();
+					Object object = buffer.get(); //Change to take from queue
 					if(object instanceof String){
 						sInput = (String)object;
 
@@ -147,7 +155,7 @@ public class GameServer implements Runnable{
 							
 							//Sets a character as already picked and cannot be chosen by others.
 							
-							character = (String)input.readObject();
+							character = (String)buffer.get();
 							
 							if(character.equals("Svullo")){
 								svulloAvailable = false;
@@ -202,7 +210,7 @@ public class GameServer implements Runnable{
 								ch.output.flush();
 							}
 						}else if(sInput.equals("pieces stolen")){
-							client.Character tempChar = characterMap.get((String)input.readObject()); //Person whose pieces have been stolen
+							client.Character tempChar = characterMap.get((String)buffer.get()); //Person whose pieces have been stolen
 							tempChar.setPieces(0); //Player now has 0 pieces.
 							for (ClientHandler ch : clientMap.values()){ //Tell all other clients a persons pieces have been stolen.
 								ch.output.writeObject("steal pieces");
@@ -210,7 +218,7 @@ public class GameServer implements Runnable{
 								ch.output.flush();
 							}
 						}else if(sInput.equals("victory")){ 
-							String winner = (String) input.readObject();
+							String winner = (String) buffer.get();
 							for (ClientHandler ch : clientMap.values()) {
 								ch.output.writeObject("winner");
 								ch.output.writeObject(winner);
@@ -264,10 +272,10 @@ public class GameServer implements Runnable{
 						client.Character character = (client.Character) object;
 						updateCharPos(character);
 
-						
+
 					}
 					
-				}catch (IOException | ClassNotFoundException e) {
+				}catch (IOException | InterruptedException e) {
 					closeSocket();
 					Thread.currentThread().stop();
 					e.printStackTrace();
@@ -295,7 +303,7 @@ public class GameServer implements Runnable{
 			/**
 			 * Constructor
 			 * 
-			 * @param	ClientHandler	ch
+			 * @param	{@Link ClientHandler}	ch
 			 */
 			
 			public CountDown(ClientHandler ch){
@@ -349,7 +357,7 @@ public class GameServer implements Runnable{
 		 * goes through the number of players and when it reaches
 		 * the number of players it goes back down to 1
 		 * 
-		 * @param	boolean		enableButton
+		 * @param	{@Link boolean}		enableButton
 		 */
 		
 		public void clientsTurn(boolean enableButtons){
@@ -414,7 +422,7 @@ public class GameServer implements Runnable{
 		/**
 		 * Creates a character and places it on a empty starting position
 		 * 
-		 * @param	String	name
+		 * @param	{@Link String}	name
 		 */
 
 		public synchronized void createCharacter(String name) {
@@ -495,7 +503,7 @@ public class GameServer implements Runnable{
 		/**
 		 * Send out a character that has been updated to all clients
 		 * 
-		 * @param	Character	charr
+		 * @param @{Link Character} charr
 		 */
 		
 		public void updateCharPos(client.Character charr) {
