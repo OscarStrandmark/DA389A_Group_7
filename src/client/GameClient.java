@@ -14,8 +14,6 @@ import java.util.Scanner;
 
 import gui.ViewerListener;
 
-import shared.*;
-
 /**
  * 
  * @author Julian Hultgren, Simon Börjesson, Lukas Persson, Erik Johansson
@@ -408,9 +406,6 @@ public class GameClient implements Serializable{
 		boolean hannibal;
 		boolean hook;
 		private int treasurePos;
-
-		private Buffer<Object> buffer;
-		private ObjectReciever or;
 		
 		/**
 		 * Constructor 
@@ -446,20 +441,17 @@ public class GameClient implements Serializable{
 			}catch (IOException e ){
 				e.printStackTrace();
 			}
-
-			buffer = new Buffer<Object>();
-			or = new ObjectReciever(input, buffer);
 				
 			while(!Thread.interrupted()){
 				try{
-					Object object = buffer.get();
+					Object object = input.readObject();
 
 					if(object instanceof Integer){ //Set a character. 
 						int row = (int)object;
-						int col =  (int)buffer.get();
+						int col =  (int)input.readObject();
 						map[row][col].removeSleepingCharacter();
 						
-						client.Character character = (client.Character)buffer.get();
+						client.Character character = (client.Character)input.readObject();
 						if(character.sleeping() > 0){
 							for(ViewerListener listener: listeners){
 								listener.setIconSleep(character.getCharacterName(), false);
@@ -504,14 +496,14 @@ public class GameClient implements Serializable{
 						}else if(object.equals("winner")){
 							System.out.println("VI HAR EN VINNARE!!");
 							for(ViewerListener listener: listeners){
-								listener.showVictory((String)buffer.get());
+								listener.showVictory((String)input.readObject());
 								listener.disableButtons();
 							}
 							disconnect();
 						}	
 						else if(object.equals("treasure position")){
 						
-							this.treasurePos = (int)buffer.get();
+							this.treasurePos = (int)input.readObject();
 							switch(treasurePos){
 							case 1:
 								map[2][12].treasureOn();
@@ -601,7 +593,7 @@ public class GameClient implements Serializable{
 								listener.enableButtons("time out");
 							}
 						}else if(object.equals("steal pieces")){
-							characterMap.get(buffer.get()).setPieces(0);
+							characterMap.get(input.readObject()).setPieces(0);
 						}else{ //Else seems dangerous, change in case maybe?
 							for(ViewerListener listener: listeners){
 								System.out.println("Client: mottagit ny user/users uppdaterar \"ConnectedUserList\"");
@@ -611,12 +603,12 @@ public class GameClient implements Serializable{
 								for(ViewerListener listener: listeners){
 									listener.addConnectedUser((String) object);
 								}
-								object = buffer.get();
+								object = input.readObject();
 							}
 						}
 					}
 
-				}catch (IOException | InterruptedException e){
+				}catch (IOException | ClassNotFoundException e){
 					disconnect();
 					e.printStackTrace();
 					Thread.currentThread().stop();					
