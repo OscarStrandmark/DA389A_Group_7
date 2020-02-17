@@ -1,16 +1,16 @@
-package client;
+package shared;
 
 import java.io.ObjectInputStream;
 import shared.Buffer;
 
-public class ClientObjectReciever extends Thread{
+public class ObjectReciever extends Thread{
 
     private ObjectInputStream ois;
     private Buffer<Object> b;
 
     private boolean alive = true;
 
-    public ClientObjectReciever(ObjectInputStream ois, Buffer<Object> b){
+    public ObjectReciever(ObjectInputStream ois, Buffer<Object> b){
         this.ois = ois;
         this.b = b;
         start();
@@ -24,10 +24,9 @@ public class ClientObjectReciever extends Thread{
     public void run() {
         while(alive){
             try {
-                Object o = (Object) ois.readObject();
+                Object o = ois.readObject();
                 b.put(o);
             } catch (Exception e) {
-                System.err.println("CLIENT");
                 e.printStackTrace();
             }
         }
