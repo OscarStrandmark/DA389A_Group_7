@@ -122,6 +122,8 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 	private JTextField username = new JTextField("");
 	private JTextArea character = new JTextArea("");
 
+	private JButton bHelp = new JButton("View rules");
+
 	private JButton bConnect = new JButton("Choose caracter");
 	private JButton bDisconnect = new JButton("Disconnect");
 	private JButton bClose = new JButton("Close");
@@ -298,6 +300,8 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 		leftPanel.add(leftGridPanel, BorderLayout.NORTH);
 		leftPanel.add(infoArea, BorderLayout.CENTER);
 
+		inputLeftPanel.add(bHelp);
+
 		inputPanel.setPreferredSize(new Dimension(100, 50));
 		inputPanel.add(inputLeftPanel, BorderLayout.WEST);
 		inputPanel.add(inputMiddlePanel, BorderLayout.CENTER);
@@ -315,6 +319,7 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 		inputRightPanel.add(bDisconnect);
 		inputRightPanel.add(bClose);
 
+		bHelp.addActionListener(this);
 		bDisconnect.addActionListener(this);
 		bConnect.addActionListener(this);
 		bClose.addActionListener(this);
@@ -709,6 +714,9 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 	 */
 	
 	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == bHelp){
+			//TODO: Open help & Rules
+		}
 		if (e.getSource() == bConnect) {
 			if (!username.getText().equals("")) {
 				client.setUsername(username.getText());
@@ -748,8 +756,6 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 			enableButtons("disable all");
 		}
 		if (e.getSource() == bLeft) {
-
-
 			if((System.currentTimeMillis() - lastActionAt) > 200){
 				frame.requestFocus();	
 				client.moveCharacter(username.getText(), "Left");

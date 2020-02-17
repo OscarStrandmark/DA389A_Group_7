@@ -35,8 +35,9 @@ public class MenuFrame implements ActionListener{
 	private	JButton host = new JButton("Host");
 	private	JButton join = new JButton("Join");
 	private	JButton quit = new JButton("Quit");
+	private JButton help = new JButton("Help & Rules");
 	private GridBagLayout layout = new GridBagLayout();	
-	private	JPanel panel = new JPanel(new GridLayout(4,1,10,10));
+	private	JPanel panel = new JPanel(new GridLayout(5,1,10,10));
 	JFrame frame = new JFrame("Main Menu");
 	
 	/**
@@ -53,6 +54,7 @@ public class MenuFrame implements ActionListener{
 		panel.setOpaque(false);
 		panel.add(host);
 		panel.add(join);
+		panel.add(help);
 		panel.add(quit);
 	
 		iconPanel.add(panel,new GridBagConstraints());
@@ -60,6 +62,7 @@ public class MenuFrame implements ActionListener{
 		
 		host.addActionListener(this);
 		join.addActionListener(this);
+		help.addActionListener(this);
 		quit.addActionListener(this);
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -93,6 +96,9 @@ public class MenuFrame implements ActionListener{
 		if(e.getSource() == quit) {
 			System.out.println("Någon har klickat på 'Quit'"); //Kommentar för White box-testning - Julian Hultgren
 			System.exit(0);
+		}
+		if(e.getSource() == help) {
+			//TODO: Open help-window
 		}
 	}	
 	public static void main(String[] args) {
