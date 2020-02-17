@@ -227,8 +227,6 @@ public class GameClient implements Serializable{
 				for (ViewerListener listener : listeners) {
 					listener.setIconSleep("Treasure", false);
 				}
-				characterMap.get(username).takeTreasure();
-				connection.flushCharacter(characterMap.get(username));
 			}
 			
 			//Check if player is on boat tile. 
@@ -438,6 +436,7 @@ public class GameClient implements Serializable{
 				input = new ObjectInputStream(socket.getInputStream());
 				output.writeObject(username);
 				output.flush();
+				socket.setSoTimeout(25000);
 			}catch (IOException e ){
 				e.printStackTrace();
 			}
@@ -480,11 +479,6 @@ public class GameClient implements Serializable{
 								listener.setIconSleep(character.getCharacterName(), true);
 							}
 						}
-						if(character.hasTreasure() == true){
-							for(ViewerListener listener: listeners){
-								listener.updateInfoRutaTreasure(character.getName() + "\n");
-							}
-						}
 						System.out.println("CLIENT: mottaget Character-objekts sleeping: " + character.sleeping());
 						updateCharacter(character);
 					}
@@ -499,6 +493,9 @@ public class GameClient implements Serializable{
 								listener.showVictory((String)input.readObject());
 								listener.disableButtons();
 							}
+
+							
+							
 							disconnect();
 						}	
 						else if(object.equals("treasure position")){
@@ -662,8 +659,6 @@ public class GameClient implements Serializable{
 				e.printStackTrace();
 			}
 		}
-
-
 		
 		/**
 		 * Sends a character to the server

@@ -263,8 +263,6 @@ public class GameServer implements Runnable{
 						//Synchronizing of characters. 
 						client.Character character = (client.Character) object;
 						updateCharPos(character);
-
-						
 					}
 					
 				}catch (IOException | ClassNotFoundException e) {

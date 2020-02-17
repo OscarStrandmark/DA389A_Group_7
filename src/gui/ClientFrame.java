@@ -28,7 +28,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.Timer;
 
 import client.GameClient;
 
@@ -145,14 +144,6 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 	private GameClient client;
 	
 	private String target = "";
-
-	private long lastActionAt = System.currentTimeMillis();
-	private long delay = 200;
-	private Timer moveTimer = new Timer((int)delay,new ActionListener(){
-		public void actionPerformed(ActionEvent e){
-			enableButtons("move");
-		}
-	});
 	
 	/**
 	 * Constructor that sets up the visual for the client
@@ -754,53 +745,24 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 			enableButtons("disable all");
 		}
 		if (e.getSource() == bLeft) {
-
-			if((System.currentTimeMillis() - lastActionAt) > delay){
-
-				enableButtons("disable all");
-				moveTimer.start();
-				frame.requestFocus();	
-				client.moveCharacter(username.getText(), "Left");
-				System.out.println("ClientFrame: Left");
-				lastActionAt = System.currentTimeMillis();
-			}
-			
+			frame.requestFocus();	
+			client.moveCharacter(username.getText(), "Left");
+			System.out.println("ClientFrame: Left");
 		}
 		if (e.getSource() == bRight) {
-			if((System.currentTimeMillis() - lastActionAt) > delay){
-
-				enableButtons("disable all");
-				moveTimer.start();
-				frame.requestFocus();
-				client.moveCharacter(username.getText(), "Right");
-				System.out.println("ClientFrame: Right");
-				lastActionAt = System.currentTimeMillis();
-			}
-			
+			frame.requestFocus();
+			client.moveCharacter(username.getText(), "Right");
+			System.out.println("ClientFrame: Right");
 		}
 		if (e.getSource() == bUp) {
-			if((System.currentTimeMillis() - lastActionAt) > delay){
-
-				enableButtons("disable all");
-				moveTimer.start();
-				frame.requestFocus();
-				client.moveCharacter(username.getText(), "Up");
-				System.out.println("ClientFrame: Up");
-				lastActionAt = System.currentTimeMillis();
-			}
-			
+			frame.requestFocus();
+			client.moveCharacter(username.getText(), "Up");
+			System.out.println("ClientFrame: Up");
 		}
 		if (e.getSource() == bDown) {
-			if((System.currentTimeMillis() - lastActionAt) > delay){
-
-				enableButtons("disable all");
-				moveTimer.start();
-				frame.requestFocus();
-				client.moveCharacter(username.getText(), "Down");
-				System.out.println("ClientFrame: Down");
-				lastActionAt = System.currentTimeMillis();
-			}
-			
+			frame.requestFocus();
+			client.moveCharacter(username.getText(), "Down");
+			System.out.println("ClientFrame: Down");
 		}
 		if (e.getSource() == chooseChar){
 			
@@ -824,40 +786,16 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_UP){
-			if((System.currentTimeMillis() - lastActionAt) > delay){
-
-				enableButtons("disable all");
-				moveTimer.start();
-				client.moveCharacter(username.getText(), "Up");
-				lastActionAt = System.currentTimeMillis();
-			}
+			client.moveCharacter(username.getText(), "Up");
 		}
 		if(code == KeyEvent.VK_DOWN){
-			if((System.currentTimeMillis() - lastActionAt) > delay){
-
-				enableButtons("disable all");
-				moveTimer.start();
-				client.moveCharacter(username.getText(), "Down");
-				lastActionAt = System.currentTimeMillis();
-			}
+			client.moveCharacter(username.getText(), "Down");
 		}
 		if(code == KeyEvent.VK_LEFT){
-			if((System.currentTimeMillis() - lastActionAt) > delay){
-
-				enableButtons("disable all");
-				moveTimer.start();
-				client.moveCharacter(username.getText(), "Left");
-				lastActionAt = System.currentTimeMillis();
-			}
+			client.moveCharacter(username.getText(), "Left");
 		}
 		if(code == KeyEvent.VK_RIGHT){
-			if((System.currentTimeMillis() - lastActionAt) > delay){
-
-				enableButtons("disable all");
-				moveTimer.start();
-				client.moveCharacter(username.getText(), "Right");
-				lastActionAt = System.currentTimeMillis();
-			}
+			client.moveCharacter(username.getText(), "Right");
 		}
 //		if(code == KeyEvent.VK_ENTER){
 //			client.endTurn();
