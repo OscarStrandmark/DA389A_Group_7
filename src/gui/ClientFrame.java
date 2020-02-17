@@ -715,7 +715,7 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == bHelp){
-			//TODO: Open help & Rules
+			new Rules().showRules();
 		}
 		if (e.getSource() == bConnect) {
 			if (!username.getText().equals("")) {

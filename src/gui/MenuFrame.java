@@ -98,7 +98,7 @@ public class MenuFrame implements ActionListener{
 			System.exit(0);
 		}
 		if(e.getSource() == help) {
-			//TODO: Open help-window
+			new Rules().showRules();
 		}
 	}	
 	public static void main(String[] args) {
