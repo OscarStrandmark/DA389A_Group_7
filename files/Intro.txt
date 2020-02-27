@@ -1,0 +1,4 @@
+<h2>Intro</h2>På Sjörövarön finns en skatt gömd, en skatt som nu ska hittas. För att skatten ska visas på kartan måste först alla kartbitar finnas. Därefter ska man fly ön tillsammans med skatten!
+
+<b>Anslutning: </b>
+Man ansluter sig till ett spel genom att ange ip-adressen till den som agerar host/värd. Man skriver in ett användarnamn och väljer därefter en spelkaraktär. Värden startar spelet.

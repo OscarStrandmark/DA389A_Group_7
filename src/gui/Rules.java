@@ -1,15 +1,9 @@
 package gui;
 
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import java.awt.*;
+import java.io.*;
+import javax.swing.*;
 
 /**
  * Frame that shows rules of the game, as of now needs rules
@@ -21,28 +15,28 @@ public class Rules extends JPanel {
     
 	/**
 	 * Tabs to show in ui, easy to add more tabs if needed
-	 * You will have to use images as input in this implementation
-	 * feel free to change if you want to do it any other way.
+	 *
 	 */
 	public Rules() {
 		new GridLayout(1, 1);
 		JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane.setPreferredSize(new Dimension(450, 600));
 
-		JComponent pnl1 = createPaneWithImage("images/placeholder.png");
+		JComponent pnl1 = loadGameInfo("Intro.txt");
 		tabbedPane.addTab("Intro", pnl1);
 
-		JComponent pnl2 = createPaneWithImage("images/placeholder.png");
+		JComponent pnl2 = loadGameInfo("Kartbitar.txt");
 		tabbedPane.addTab("Kartbitar", pnl2);
 
-		JComponent pnl3 = createPaneWithImage("images/placeholder.png");
+		JComponent pnl3 = loadGameInfo("Skjuta.txt");
 		tabbedPane.addTab("Skjuta", pnl3);
 
-		JComponent pnl4 = createPaneWithImage("images/placeholder.png");
-		tabbedPane.addTab("Hoppa", pnl4);
+		JComponent pnl4 = loadGameInfo("Underlag.txt");
+		tabbedPane.addTab("Underlag", pnl4);
 		
-		JComponent pnl5 = createPaneWithImage("images/placeholder.png");
+		JComponent pnl5 = loadGameInfo("Fly.txt");
 		tabbedPane.addTab("Fly", pnl5);
-		add(tabbedPane); 		
+		add(tabbedPane);
 	}
 
 	protected JComponent createPaneWithImage(String imgPath) {
@@ -53,6 +47,39 @@ public class Rules extends JPanel {
 		lblContent.setHorizontalAlignment(JLabel.CENTER);
 		pnl.setLayout(new GridLayout(1, 1));
 		pnl.add(lblContent);
+		return pnl;
+	}
+
+	/**
+	 * Creates and fills textcomponent with text from textfile
+	 * @param infoName Name of textfile
+	 * @return Panel containing text from file
+	 * @author André Möller, Rubem Midhall
+ 	 */
+
+	protected JComponent loadGameInfo(String infoName) {
+		JPanel pnl = new JPanel(false);
+		BufferedReader reader;
+		try {
+			reader = new BufferedReader(new FileReader("files/"+infoName));
+			String tempLine = reader.readLine();
+			String line = tempLine;
+			while (tempLine != null) {
+				tempLine = reader.readLine();
+				if(tempLine != null) {
+					line += "<br>" + tempLine;
+				}
+			}
+			reader.close();
+
+			JEditorPane textAreaContent = new JEditorPane("text/html", "");
+			textAreaContent.setText(line);
+			textAreaContent.setEditable(false);
+			pnl.setLayout(new GridLayout(1, 1));
+			pnl.add(textAreaContent);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return pnl;
 	}
 

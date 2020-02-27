@@ -1,0 +1,11 @@
+<h2>Underlag</h2>Spelplanen är uppbyggd utav rutor, där varje ruta är en position, på vilken en spelares pirat-karaktär kan befinna sig. Varje ruta har olika parametrar, såsom ifall den går att stå på, typ av underlag eller ifall skatten finns på positionen. Olika parametrar ger rutan olika egenskaper. 
+
+<b>Typ av underlag: </b> 
+<b>Vanlig mark:</b> Går att stå på. Piraten kan också skjuta över rutan.
+<b>Flod: </b>Går att stå på, men piraten kommer att färdas längst med floden efter varje runda. Går att skjuta över.
+<b>Klippor:</b> Går ej att stå på, samt ej att skjuta över.
+<b>Djungel:</b> Samma som klippor; går ej att stå på, samt ej att skjuta över.
+<b>Avgrund:</b> Går ej att stå på men en pirat kan försöka hoppa över den. Vid misslyckat hopp förflyttas piraten till en position vid avgrundens “botten”. Går att skjuta över.
+<b>Hopp-ruta:</b> En ruta, från vilken en pirat kan försöka ta sig till en annan hopp-ruta.  Exempel på detta kan vara att vara över en flod eller hoppa över en avgrund. Misslyckas piraten så förflyttas han till en annan position, vilket är specifikt utvald för varje hopp-ruta.
+<b>Start-/målruta:</b> Går att stå på, samt att skjuta över. På dessa positioner startar piraterna och det är till dessa som de ska återvända med skatten för att vinna.
+<b>Skatt-ruta:</b> Rutan där skatten befinner sig. På denna ruta kommer skatten att visas för den pirat som har alla kartbitar.
