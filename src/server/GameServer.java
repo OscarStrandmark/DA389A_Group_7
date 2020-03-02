@@ -202,7 +202,14 @@ public class GameServer implements Runnable{
 								}
 								ch.output.flush();
 							}
-						}else if(sInput.equals("pieces stolen")){
+						}else if(sInput.equals("playershot")){
+							for (ClientHandler ch : clientMap.values()) {
+								ch.output.writeObject("playershot");
+								ch.output.flush();
+							}
+						}
+
+						else if(sInput.equals("pieces stolen")){
 							client.Character tempChar = characterMap.get((String)input.readObject()); //Person whose pieces have been stolen
 							tempChar.setPieces(0); //Player now has 0 pieces.
 							for (ClientHandler ch : clientMap.values()){ //Tell all other clients a persons pieces have been stolen.

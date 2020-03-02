@@ -30,6 +30,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import client.GameClient;
+import client.Sound;
 
 
 /**
@@ -127,6 +128,8 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 	private JButton bConnect = new JButton("Choose caracter");
 	private JButton bDisconnect = new JButton("Disconnect");
 	private JButton bClose = new JButton("Close");
+	private JButton bMuteEffects = new JButton("Toggle effects");
+	private JButton bMuteMusic = new JButton("Toggle Music");
 
 	private JButton bLeft = new JButton("<<");
 	private JButton bRight = new JButton(">>");
@@ -318,11 +321,15 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 
 		inputRightPanel.add(bDisconnect);
 		inputRightPanel.add(bClose);
+		inputRightPanel.add(bMuteEffects);
+		inputRightPanel.add(bMuteMusic);
 
 		bHelp.addActionListener(this);
 		bDisconnect.addActionListener(this);
 		bConnect.addActionListener(this);
 		bClose.addActionListener(this);
+		bMuteEffects.addActionListener(this);
+		bMuteMusic.addActionListener(this);
 		bMove.addActionListener(this);
 		bShoot.addActionListener(this);
 		bUp.addActionListener(this);
@@ -537,7 +544,11 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 	 */
 	
 	public void updateInfoRutaTreasure(String text) {
-		infoArea.replaceRange(text, 392, 412);
+		try {
+			infoArea.replaceRange(text, 392, 412);
+		}catch (IllegalArgumentException e){
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -732,7 +743,13 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 		if (e.getSource() == bClose) {
 			System.exit(0);
 		}
-		
+		if (e.getSource() == bMuteMusic) {
+			Sound.toggleSoundMusic();
+		}
+		if (e.getSource() == bMuteEffects) {
+			Sound.toggleSound();
+		}
+
 		if (e.getSource() == bMove) {
 			frame.requestFocus();
 			enableButtons("move");

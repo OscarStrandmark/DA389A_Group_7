@@ -364,7 +364,11 @@ public class GameClient implements Serializable{
 		String targetName = "";
 		boolean dice = shootDice();
 		System.out.println("Shoot dice: " + dice + " for: " + username);
-
+		try {
+			output.writeObject("playershot");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		if (dice) {
 			targetName = character;
 			System.out.println("Shot taken by: " + username + " at: " + targetName);
@@ -494,6 +498,7 @@ public class GameClient implements Serializable{
 							boolean enableButtons = input.readBoolean();
 							enableButtons(enableButtons);
 						}else if(object.equals("winner")){
+							Sound.win();
 							System.out.println("VI HAR EN VINNARE!!");
 							for(ViewerListener listener: listeners){
 								listener.showVictory((String)input.readObject());
@@ -592,7 +597,9 @@ public class GameClient implements Serializable{
 							for(ViewerListener listener: listeners){
 								listener.enableButtons("time out");
 							}
-						}else if(object.equals("steal pieces")){
+						}else if(object.equals("playershot")) {
+							Sound.shot();
+						} else if(object.equals("steal pieces")){
 							characterMap.get(input.readObject()).setPieces(0);
 						}else{ //Else seems dangerous, change in case maybe?
 							for(ViewerListener listener: listeners){
@@ -846,7 +853,7 @@ public class GameClient implements Serializable{
 			
 			for(ViewerListener listener: listeners){
 				listener.moveIcon(character.getCharacterName(), character.getRow(), character.getCol(), true);
-				
+				Sound.move();
 				System.out.println("Client: flytta gubbe i viewer");
 			}
 			if (character.getName().equals(username) && steps == 0 && character.sleeping() == 0) {
