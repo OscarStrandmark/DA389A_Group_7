@@ -1,23 +1,13 @@
 package gui;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.GroupLayout;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import client.GameClient;
+import client.Sound;
 
 /**
  * Class that creates the menu window for the user. 
@@ -36,6 +26,7 @@ public class MenuFrame implements ActionListener{
 	private	JButton join = new JButton("Join");
 	private	JButton quit = new JButton("Quit");
 	private JButton help = new JButton("Help & Rules");
+	private JPanel volumePanel = new JPanel();
 	private GridBagLayout layout = new GridBagLayout();	
 	private	JPanel panel = new JPanel(new GridLayout(5,1,10,10));
 	JFrame frame = new JFrame("Main Menu");
@@ -56,6 +47,23 @@ public class MenuFrame implements ActionListener{
 		panel.add(join);
 		panel.add(help);
 		panel.add(quit);
+
+		volumePanel.setLayout(new BoxLayout(volumePanel, 0));
+
+		JButton btnMute = new JButton("Bar");
+		JSlider sldLowerVolume = new JSlider(-40 * 10000000, 60206000);
+
+		sldLowerVolume.addChangeListener(event -> {
+			float volume = sldLowerVolume.getValue() / 10000000.0f;
+			Sound.setVolume(volume);
+		});
+
+		btnMute.addActionListener(event -> Sound.setVolume(0f));
+
+		volumePanel.add(sldLowerVolume, Component.LEFT_ALIGNMENT);
+		volumePanel.add(btnMute, Component.RIGHT_ALIGNMENT);
+
+		panel.add(volumePanel);
 	
 		iconPanel.add(panel,new GridBagConstraints());
 		iconPanel.setPreferredSize(new Dimension(800,600));
@@ -102,10 +110,6 @@ public class MenuFrame implements ActionListener{
 		}
 	}	
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				new MenuFrame(new ImageIcon("images/bg.jpg"));
-			}
-		});
+		SwingUtilities.invokeLater(() -> new MenuFrame(new ImageIcon("images/bg.jpg")));
 	}
 }

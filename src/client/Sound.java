@@ -11,7 +11,7 @@ import java.io.IOException;
 public class Sound {
     private static boolean sound = true;
     private static Clip musicClip;
-
+    private static FloatControl volumeControl;
 
     /**
      * Play sound file from path
@@ -50,7 +50,7 @@ public class Sound {
         if(musicClip.isRunning()) {
             musicClip.stop();
         }else{
-            backrgroundMusic();
+            backgroundMusic();
         }
 
     }
@@ -71,16 +71,26 @@ public class Sound {
     /**
      * plays music
      */
-    public static void backrgroundMusic(){
+    public static void backgroundMusic(){
         try {
             File f = new File("Sounds/music.wav");
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(f.toURI().toURL());
             musicClip = AudioSystem.getClip();
             musicClip.open(audioIn);
+
+            volumeControl = (FloatControl) musicClip.getControl(FloatControl.Type.MASTER_GAIN);
+            setVolume((volumeControl.getMinimum() + volumeControl.getMaximum()) * .5f);
+
+
             musicClip.loop(10000);
         } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void setVolume(float value) {
+        volumeControl.setValue(value);
+        System.out.println(volumeControl.getValue() + String.format("(%s - %s)", volumeControl.getMinimum(), volumeControl.getMaximum()));
     }
 
 }
