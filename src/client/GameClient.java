@@ -27,13 +27,11 @@ public class GameClient implements Serializable{
 	private	ObjectOutputStream output;
 	private String username = "";
 	private Socket socket;
-	private ArrayList<ViewerListener> listeners = new ArrayList<ViewerListener>();
-	private int[] tilePos = new int[2];
+	private ArrayList<ViewerListener> listeners = new ArrayList<>();
 	private Tile[][] map;
-	private HashMap<String, client.Character> characterMap = new HashMap<String, client.Character>(); 
-	private String character = "";
-	
-	private boolean clientTurn = true;
+	private HashMap<String, client.Character> characterMap = new HashMap<>();
+	private String characterName = "";
+
 	private boolean shotTakenThisTurn;
 	private Connection connection;
 	
@@ -68,9 +66,9 @@ public class GameClient implements Serializable{
 	 * @param 	String	character
 	 */
 	
-	public void setCharacter(String character){
-		connection.setCharacter(character);
-		this.character = character;
+	public void setCharacterName(String characterName){
+		connection.setCharacter(characterName);
+		this.characterName = characterName;
 	}
 	
 	/**
@@ -79,8 +77,8 @@ public class GameClient implements Serializable{
 	 * @return	String
 	 */
 	
-	public String getCharacter(){
-		return this.character;
+	public String getCharacterName(){
+		return this.characterName;
 	}
 	
 	/**
@@ -102,16 +100,6 @@ public class GameClient implements Serializable{
 	
 	public void addListeners(ViewerListener listener) {
 		listeners.add(listener);
-	}
-	
-	public void startGame(){
-		try {
-			System.out.println("Client: Startar matchen/väljer vems tur det är");
-			output.writeObject("STARTGAME");
-			output.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/**
@@ -169,12 +157,7 @@ public class GameClient implements Serializable{
 	 */
 	
 	public boolean jumpDice() {
-		Random rand = new Random();
-		int roll = rand.nextInt(6)+1;
-		if(roll < 5){
-			return true;
-		}
-		return false;
+		return new Random().nextInt(6) + 1 < 5;
 	}
 	
 	/**
@@ -192,9 +175,7 @@ public class GameClient implements Serializable{
 	}
 
 	/**
-	 * Method to enable buttons in ClientFrame. Called at the beginning of the players turn. 
-	 * 
-	 * @param	enableButtons	boolean
+	 * Method to enable buttons in ClientFrame. Called at the beginning of the players turn.
 	 */
 	
 	public void enableButtons(boolean enableButtons) {
@@ -228,7 +209,7 @@ public class GameClient implements Serializable{
 					listener.setIconSleep("Treasure", false);
 				}
 				characterMap.get(username).takeTreasure();
-				connection.flushCharacter(characterMap.get(username));
+				connection.sendCharacterToServer(characterMap.get(username));
 			}
 			
 			//Check if player is on boat tile. 
@@ -285,7 +266,7 @@ public class GameClient implements Serializable{
 				for(int i = 0; i < dice; i++){
 					me.setPos(me.getRow() + map[me.getRow()][me.getCol()].nextRow(),me.getCol() + map[me.getRow()][me.getCol()].nextCol());
 				}
-				connection.flushCharacter(me);
+				connection.sendCharacterToServer(me);
 				for(ViewerListener listener: listeners){
 					listener.enableButtons("disable move");
 				}
@@ -295,7 +276,7 @@ public class GameClient implements Serializable{
 			for(int i = 0; i < dice; i++){
 				me.setPos(me.getRow() + map[me.getRow()][me.getCol()].nextRow(),me.getCol() + map[me.getRow()][me.getCol()].nextCol());
 			}
-			connection.flushCharacter(me);
+			connection.sendCharacterToServer(me);
 			for(ViewerListener listener: listeners){
 				listener.enableButtons("disable move");
 			}
@@ -323,7 +304,7 @@ public class GameClient implements Serializable{
 			listener.enableButtons("disable jump");
 			listener.enableButtons("disable move");
 		}
-		connection.flushCharacter(characterMap.get(username));
+		connection.sendCharacterToServer(characterMap.get(username));
 	}
 	
 	/**
@@ -357,10 +338,10 @@ public class GameClient implements Serializable{
 	/**
 	 * Method that attempts to shoot the given target
 	 * 
-	 * @param	String	character
+	 * @param	String	characterName
 	 */
 	
-	public void shoot(String character){
+	public void shoot(String characterName){
 		String targetName = "";
 		boolean dice = shootDice();
 		System.out.println("Shoot dice: " + dice + " for: " + username);
@@ -370,7 +351,7 @@ public class GameClient implements Serializable{
 			e.printStackTrace();
 		}
 		if (dice) {
-			targetName = character;
+			targetName = characterName;
 			System.out.println("Shot taken by: " + username + " at: " + targetName);
 			
 			map[characterMap.get(targetName).getRow()][characterMap.get(targetName).getCol()].moveCharacterToSleeping();
@@ -416,24 +397,16 @@ public class GameClient implements Serializable{
 		 * @param 	String	ipAddress
 		 * @param 	int		port
 		 */
-		
 		public Connection(String ipAddress, int port){
 			this.ipAddress = ipAddress;
 			this.port = port;
 		}
-		
-		/**
-		 * An empty method
-		 */
-			
-		public Connection() {
-			
-		}
+
+		public Connection() {}
 		
 		/**
 		 * Executes the "Connection" class thread
 		 */
-
 		public void run(){
 			System.out.println("Client Running");
 			try{
@@ -452,7 +425,7 @@ public class GameClient implements Serializable{
 
 					if(object instanceof Integer){ //Set a character. 
 						int row = (int)object;
-						int col =  (int)input.readObject();
+						int col = (int)input.readObject();
 						map[row][col].removeSleepingCharacter();
 						
 						client.Character character = (client.Character)input.readObject();
@@ -678,7 +651,7 @@ public class GameClient implements Serializable{
 		 * @param	Chartacter	character
 		 */
 		
-		public void flushCharacter(client.Character character){ //TODO: Change name of this shit method. 
+		public void sendCharacterToServer(client.Character character) {
 			try{
 				output.writeObject(character);
 				output.flush();
@@ -995,10 +968,10 @@ public class GameClient implements Serializable{
 		map[15][34].setNext(1, 0);
 		map[16][34].setNext(1, 0);
 		map[17][34].setNext(1, 0);
-		map[17][35].setNext(1, -1); //
-		map[17][36].setNext(0, -1); //
-		map[17][37].setNext(0, -1); //
-		map[16][37].setNext(1, 0); //
+		map[17][35].setNext(1, -1);
+		map[17][36].setNext(0, -1);
+		map[17][37].setNext(0, -1);
+		map[16][37].setNext(1, 0);
 		map[18][34].setNext(0, -1);
 		map[18][33].setNext(1, 0);
 		map[19][33].setNext(0, -1);

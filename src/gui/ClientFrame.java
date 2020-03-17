@@ -22,7 +22,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -585,7 +584,7 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 			treasure.setLocation((col * 22), (row * 20));
 			treasure.setVisible(visible);
 			if(visible){
-				System.out.println("ClientFrame: Visar skatten för " + client.getCharacter() + "!!!");
+				System.out.println("ClientFrame: Visar skatten för " + client.getCharacterName() + "!!!");
 			}
 			
 			break;
@@ -806,7 +805,7 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 		if (e.getSource() == chooseChar){
 			
 			if(!character.getText().equals("")){
-				client.setCharacter(character.getText());
+				client.setCharacterName(character.getText());
 				chooseCharFrame.setVisible(false);
 			}	
 		}
