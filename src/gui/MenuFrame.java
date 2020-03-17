@@ -26,7 +26,6 @@ public class MenuFrame implements ActionListener{
 	private	JButton join = new JButton("Join");
 	private	JButton quit = new JButton("Quit");
 	private JButton help = new JButton("Help & Rules");
-	private JPanel volumePanel = new JPanel();
 	private GridBagLayout layout = new GridBagLayout();	
 	private	JPanel panel = new JPanel(new GridLayout(5,1,10,10));
 	JFrame frame = new JFrame("Main Menu");
@@ -47,23 +46,7 @@ public class MenuFrame implements ActionListener{
 		panel.add(join);
 		panel.add(help);
 		panel.add(quit);
-
-		volumePanel.setLayout(new BoxLayout(volumePanel, 0));
-
-		JButton btnMute = new JButton("Bar");
-		JSlider sldLowerVolume = new JSlider(-40 * 10000000, 60206000);
-
-		sldLowerVolume.addChangeListener(event -> {
-			float volume = sldLowerVolume.getValue() / 10000000.0f;
-			Sound.setVolume(volume);
-		});
-
-		btnMute.addActionListener(event -> Sound.setVolume(0f));
-
-		volumePanel.add(sldLowerVolume, Component.LEFT_ALIGNMENT);
-		volumePanel.add(btnMute, Component.RIGHT_ALIGNMENT);
-
-		panel.add(volumePanel);
+		panel.add(new BackgroundMusicControlPanel());
 	
 		iconPanel.add(panel,new GridBagConstraints());
 		iconPanel.setPreferredSize(new Dimension(800,600));

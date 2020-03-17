@@ -6,10 +6,11 @@ import java.io.IOException;
 
 /**
  * Class that play sounds
- * @Author André Möller, Ruben Midhall
+ * @Author André Möller, Ruben Midhall, Pontus Laos
  */
 public class Sound {
     private static boolean sound = true;
+    private static boolean isBackgroundMusicPlaying = false;
     private static Clip musicClip;
     private static FloatControl volumeControl;
 
@@ -46,13 +47,16 @@ public class Sound {
     /**
      * toggles music
      */
-    public static void toggleSoundMusic(){
-        if(musicClip.isRunning()) {
+    public static boolean toggleSoundMusic(){
+        if (isBackgroundMusicPlaying) {
             musicClip.stop();
-        }else{
-            backgroundMusic();
+        }
+        else {
+            musicClip.start();
         }
 
+        isBackgroundMusicPlaying ^= true;
+        return isBackgroundMusicPlaying;
     }
 
     public static void shot()  {
@@ -81,16 +85,30 @@ public class Sound {
             volumeControl = (FloatControl) musicClip.getControl(FloatControl.Type.MASTER_GAIN);
             setVolume((volumeControl.getMinimum() + volumeControl.getMaximum()) * .5f);
 
-
             musicClip.loop(10000);
+            isBackgroundMusicPlaying = true;
         } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Sets the volume of the background music.
+     *
+     * The range is [-80f..6.0206f].
+     * @param value The value to set the volume equal to.
+     */
     public static void setVolume(float value) {
         volumeControl.setValue(value);
-        System.out.println(volumeControl.getValue() + String.format("(%s - %s)", volumeControl.getMinimum(), volumeControl.getMaximum()));
     }
 
+    /**
+     * Gets the volume of the background music.
+     *
+     * The range is [-80f..6-0206f].
+     * @return The volume of the background music as a float.
+     */
+    public static float getVolume() {
+        return volumeControl.getValue();
+    }
 }

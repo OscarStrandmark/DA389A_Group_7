@@ -129,7 +129,7 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 	private JButton bDisconnect = new JButton("Disconnect");
 	private JButton bClose = new JButton("Close");
 	private JButton bMuteEffects = new JButton("Toggle effects");
-	private JButton bMuteMusic = new JButton("Toggle Music");
+	private BackgroundMusicControlPanel pnlMusicControl = new BackgroundMusicControlPanel();
 
 	private JButton bLeft = new JButton("<<");
 	private JButton bRight = new JButton(">>");
@@ -322,14 +322,13 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 		inputRightPanel.add(bDisconnect);
 		inputRightPanel.add(bClose);
 		inputRightPanel.add(bMuteEffects);
-		inputRightPanel.add(bMuteMusic);
+		inputRightPanel.add(pnlMusicControl);
 
 		bHelp.addActionListener(this);
 		bDisconnect.addActionListener(this);
 		bConnect.addActionListener(this);
 		bClose.addActionListener(this);
 		bMuteEffects.addActionListener(this);
-		bMuteMusic.addActionListener(this);
 		bMove.addActionListener(this);
 		bShoot.addActionListener(this);
 		bUp.addActionListener(this);
@@ -742,9 +741,6 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 		}
 		if (e.getSource() == bClose) {
 			System.exit(0);
-		}
-		if (e.getSource() == bMuteMusic) {
-			Sound.toggleSoundMusic();
 		}
 		if (e.getSource() == bMuteEffects) {
 			Sound.toggleSound();
