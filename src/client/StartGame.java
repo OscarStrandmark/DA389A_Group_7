@@ -14,10 +14,7 @@ import gui.MenuFrame;
 
 public class StartGame {
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				new MenuFrame(new ImageIcon("images/bg.jpg"));
-			}
-		});
+		Sound.backgroundMusic();
+		SwingUtilities.invokeLater(() -> new MenuFrame(new ImageIcon("images/bg.jpg")));
 	}
 }

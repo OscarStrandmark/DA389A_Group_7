@@ -17,6 +17,7 @@ public interface ViewerListener {
 	public void updateInfoRutaMap(String text);
 	public void updateInfoRutaTreasure(String text);
 	public void enableButtons(String text);
+	public void disableButtons();
 	public void addConnectedUser(String namn);
 	public void removeConnectedUsers();
 	public void moveIcon(String name, int row, int col, boolean visible);

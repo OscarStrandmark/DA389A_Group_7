@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import gui.ServerFrame;
 
@@ -21,9 +22,9 @@ public class GameServer implements Runnable{
 
 	private ServerSocket serverSocket;
 	private Thread serverThread = new Thread(this);
-	private HashMap<String, ClientHandler> clientMap = new HashMap<String, ClientHandler>();
-	private HashMap<Integer, String> clientMapid = new HashMap<Integer, String>();
-	private HashMap<String, client.Character> characterMap = new HashMap<String, client.Character>();
+	private HashMap<String, ClientHandler> clientMap = new HashMap<>();
+	private HashMap<Integer, String> clientMapid = new HashMap<>();
+	private HashMap<String, client.Character> characterMap = new HashMap<>();
 	private Random rad = new Random();
 	private ServerFrame ui;
 	
@@ -36,13 +37,13 @@ public class GameServer implements Runnable{
 	
 	private int counter = 1; //Whose turn it is
 	private int id = 1; // OF WHO
-	private int treasurePos = 0; 
+	private int treasurePos = 0;
 	
 	/**
 	 * Constructor starts up the server
 	 * 
-	 * @param 	int			port
-	 * @param	ServerFrame	ui
+	 * @param 	{@Link int} port
+	 * @param	{@Link ServerFrame}	ui
 	 */
 	
 	public GameServer(int port, ServerFrame ui){
@@ -62,7 +63,7 @@ public class GameServer implements Runnable{
 	public void run() {
 		System.out.println("Server running...");
 		System.out.println("Server: Listening for clients...");
-		while(true){ //TODO: Change to variable
+		while(true){
 			try{
 				Socket socket = serverSocket.accept();
 				if (clientMap.size() <= 6){
@@ -74,7 +75,7 @@ public class GameServer implements Runnable{
 			}catch(IOException e){
 				e.printStackTrace();
 			}
-		}		
+		}
 	}
 	
 	/**
@@ -82,12 +83,18 @@ public class GameServer implements Runnable{
 	 */
 	
 	public void startGame(){
-		System.out.println("Server: starta spelet på servern "+id);
+
+		//Stop accepting connections to gameserver.
+		serverThread.suspend();
+
+		System.out.println("Server: starta spelet på servern " + id);
+		System.out.println("Server: Spelet startat för spelarna " + clientMap.values().stream().map(c -> c.username).collect(Collectors.joining(", ")));
+
 		for(int i = 1; i < id; i++){
 			clientMap.get(clientMapid.get(i)).createCharacter(clientMapid.get(i));
 			clientMap.get(clientMapid.get(i)).startCountdown();
 		}
-		clientMap.get(clientMapid.get(1)).clientsTurn(true);;
+		clientMap.get(clientMapid.get(1)).clientsTurn(true);
 	}
 	
 	/**
@@ -109,7 +116,7 @@ public class GameServer implements Runnable{
 		/**
 		 * Constructor starts up a output stream and a input stream
 		 * 
-		 * @param	Soket	socket
+		 * @param {@Link Socket} socket
 		 */
 		
 		public ClientHandler(Socket socket) {
@@ -127,9 +134,10 @@ public class GameServer implements Runnable{
 		 */
 		
 		public void run() {
+
 			while(socket.isConnected()){
 				try{
-					Object object = input.readObject();
+					Object object = input.readObject(); //Change to take from queue
 					if(object instanceof String){
 						sInput = (String)object;
 
@@ -197,7 +205,14 @@ public class GameServer implements Runnable{
 								}
 								ch.output.flush();
 							}
-						}else if(sInput.equals("pieces stolen")){
+						}else if(sInput.equals("playershot")){
+							for (ClientHandler ch : clientMap.values()) {
+								ch.output.writeObject("playershot");
+								ch.output.flush();
+							}
+						}
+
+						else if(sInput.equals("pieces stolen")){
 							client.Character tempChar = characterMap.get((String)input.readObject()); //Person whose pieces have been stolen
 							tempChar.setPieces(0); //Player now has 0 pieces.
 							for (ClientHandler ch : clientMap.values()){ //Tell all other clients a persons pieces have been stolen.
@@ -259,6 +274,8 @@ public class GameServer implements Runnable{
 						//Synchronizing of characters. 
 						client.Character character = (client.Character) object;
 						updateCharPos(character);
+
+
 					}
 					
 				}catch (IOException | ClassNotFoundException e) {
@@ -289,7 +306,7 @@ public class GameServer implements Runnable{
 			/**
 			 * Constructor
 			 * 
-			 * @param	ClientHandler	ch
+			 * @param	{@Link ClientHandler}	ch
 			 */
 			
 			public CountDown(ClientHandler ch){
@@ -343,7 +360,7 @@ public class GameServer implements Runnable{
 		 * goes through the number of players and when it reaches
 		 * the number of players it goes back down to 1
 		 * 
-		 * @param	boolean		enableButton
+		 * @param	{@Link boolean}		enableButton
 		 */
 		
 		public void clientsTurn(boolean enableButtons){
@@ -408,7 +425,7 @@ public class GameServer implements Runnable{
 		/**
 		 * Creates a character and places it on a empty starting position
 		 * 
-		 * @param	String	name
+		 * @param	{@Link String}	name
 		 */
 
 		public synchronized void createCharacter(String name) {
@@ -489,7 +506,7 @@ public class GameServer implements Runnable{
 		/**
 		 * Send out a character that has been updated to all clients
 		 * 
-		 * @param	Character	charr
+		 * @param @{Link Character} charr
 		 */
 		
 		public void updateCharPos(client.Character charr) {

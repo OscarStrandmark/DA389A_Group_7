@@ -40,11 +40,7 @@ public class Tile {
 	 */
 	
 	public boolean containsSleepingCharacter(){
-		if(sleepingCharacter != null){
-			return true;
-		}else{
-			return false;
-		}
+		return sleepingCharacter != null;
 	}
 	
 	/**
@@ -80,11 +76,7 @@ public class Tile {
 	 */
 	
 	public boolean containsCharacter(){
-		if(character != null){
-			return true;
-		}else{
-			return false;
-		}
+		return character != null;
 	}
 	
 	/**

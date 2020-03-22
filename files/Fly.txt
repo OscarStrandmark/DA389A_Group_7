@@ -1,0 +1,1 @@
+<h2>Fly</h2>För att fly med skatten ska man ta sig tillbaka till den båten som man startade på. För att lyckas fly ska man ställa sig på den rutan som båten befinner sig på, om detta inte görs så kommer man inte lyckas att fly. Det är alltså viktigt att ställa sig på den exakta rutan som man startade spelomgången på. 

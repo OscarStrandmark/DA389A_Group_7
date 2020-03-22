@@ -22,7 +22,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -30,6 +29,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import client.GameClient;
+import client.Sound;
 
 
 /**
@@ -122,9 +122,13 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 	private JTextField username = new JTextField("");
 	private JTextArea character = new JTextArea("");
 
+	private JButton bHelp = new JButton("View rules");
+
 	private JButton bConnect = new JButton("Choose caracter");
 	private JButton bDisconnect = new JButton("Disconnect");
 	private JButton bClose = new JButton("Close");
+	private JButton bMuteEffects = new JButton("Toggle effects");
+	private BackgroundMusicControlPanel pnlMusicControl = new BackgroundMusicControlPanel();
 
 	private JButton bLeft = new JButton("<<");
 	private JButton bRight = new JButton(">>");
@@ -144,6 +148,9 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 	private GameClient client;
 	
 	private String target = "";
+
+	private long lastActionAt = System.currentTimeMillis();
+
 	
 	/**
 	 * Constructor that sets up the visual for the client
@@ -295,6 +302,8 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 		leftPanel.add(leftGridPanel, BorderLayout.NORTH);
 		leftPanel.add(infoArea, BorderLayout.CENTER);
 
+		inputLeftPanel.add(bHelp);
+
 		inputPanel.setPreferredSize(new Dimension(100, 50));
 		inputPanel.add(inputLeftPanel, BorderLayout.WEST);
 		inputPanel.add(inputMiddlePanel, BorderLayout.CENTER);
@@ -311,10 +320,14 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 
 		inputRightPanel.add(bDisconnect);
 		inputRightPanel.add(bClose);
+		inputRightPanel.add(bMuteEffects);
+		inputRightPanel.add(pnlMusicControl);
 
+		bHelp.addActionListener(this);
 		bDisconnect.addActionListener(this);
 		bConnect.addActionListener(this);
 		bClose.addActionListener(this);
+		bMuteEffects.addActionListener(this);
 		bMove.addActionListener(this);
 		bShoot.addActionListener(this);
 		bUp.addActionListener(this);
@@ -530,6 +543,7 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 	
 	public void updateInfoRutaTreasure(String text) {
 		infoArea.replaceRange(text, 392, 412);
+		System.out.println("Client: Uppdaterat skattinfo.");
 	}
 	
 	/**
@@ -537,7 +551,6 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 	 */
 	
 	public void moveIcon(String name, int row, int col, boolean visible){
-		
 		switch (name) {
 		case "Svullo":
 			svullo.setLocation((col * 22)-4, (row *20)-25);
@@ -567,7 +580,7 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 			treasure.setLocation((col * 22), (row * 20));
 			treasure.setVisible(visible);
 			if(visible){
-				System.out.println("ClientFrame: Visar skatten för " + client.getCharacter() + "!!!");
+				System.out.println("ClientFrame: Visar skatten för " + client.getCharacterName() + "!!!");
 			}
 			
 			break;
@@ -691,11 +704,24 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 		}
 	}
 	
+
+	public void disableButtons(){
+		bMove.setEnabled(false);
+		bShoot.setEnabled(false);
+		bUp.setEnabled(false);
+		bDown.setEnabled(false);
+		bLeft.setEnabled(false);
+		bRight.setEnabled(false);
+		bEndTurn.setEnabled(false);
+	}
 	/**
 	 * Action Listener
 	 */
 	
 	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == bHelp){
+			new Rules().showRules();
+		}
 		if (e.getSource() == bConnect) {
 			if (!username.getText().equals("")) {
 				client.setUsername(username.getText());
@@ -711,7 +737,10 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 		if (e.getSource() == bClose) {
 			System.exit(0);
 		}
-		
+		if (e.getSource() == bMuteEffects) {
+			Sound.toggleSound();
+		}
+
 		if (e.getSource() == bMove) {
 			frame.requestFocus();
 			enableButtons("move");
@@ -735,29 +764,44 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 			enableButtons("disable all");
 		}
 		if (e.getSource() == bLeft) {
-			frame.requestFocus();	
-			client.moveCharacter(username.getText(), "Left");
-			System.out.println("ClientFrame: Left");
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				frame.requestFocus();	
+				client.moveCharacter(username.getText(), "Left");
+				System.out.println("ClientFrame: Left");
+				lastActionAt = System.currentTimeMillis();
+			}
+			
 		}
 		if (e.getSource() == bRight) {
-			frame.requestFocus();
-			client.moveCharacter(username.getText(), "Right");
-			System.out.println("ClientFrame: Right");
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				frame.requestFocus();
+				client.moveCharacter(username.getText(), "Right");
+				System.out.println("ClientFrame: Right");
+				lastActionAt = System.currentTimeMillis();
+			}
+			
 		}
 		if (e.getSource() == bUp) {
-			frame.requestFocus();
-			client.moveCharacter(username.getText(), "Up");
-			System.out.println("ClientFrame: Up");
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				frame.requestFocus();
+				client.moveCharacter(username.getText(), "Up");
+				System.out.println("ClientFrame: Up");
+				lastActionAt = System.currentTimeMillis();
+			}
+			
 		}
 		if (e.getSource() == bDown) {
-			frame.requestFocus();
-			client.moveCharacter(username.getText(), "Down");
-			System.out.println("ClientFrame: Down");
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				frame.requestFocus();
+				client.moveCharacter(username.getText(), "Down");
+				System.out.println("ClientFrame: Down");
+				lastActionAt = System.currentTimeMillis();
+			}
 		}
 		if (e.getSource() == chooseChar){
 			
 			if(!character.getText().equals("")){
-				client.setCharacter(character.getText());
+				client.setCharacterName(character.getText());
 				chooseCharFrame.setVisible(false);
 			}	
 		}
@@ -776,16 +820,28 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_UP){
-			client.moveCharacter(username.getText(), "Up");
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				client.moveCharacter(username.getText(), "Up");
+				lastActionAt = System.currentTimeMillis();
+			}
 		}
 		if(code == KeyEvent.VK_DOWN){
-			client.moveCharacter(username.getText(), "Down");
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				client.moveCharacter(username.getText(), "Down");
+				lastActionAt = System.currentTimeMillis();
+			}
 		}
 		if(code == KeyEvent.VK_LEFT){
-			client.moveCharacter(username.getText(), "Left");
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				client.moveCharacter(username.getText(), "Left");
+				lastActionAt = System.currentTimeMillis();
+			}
 		}
 		if(code == KeyEvent.VK_RIGHT){
-			client.moveCharacter(username.getText(), "Right");
+			if((System.currentTimeMillis() - lastActionAt) > 200){
+				client.moveCharacter(username.getText(), "Right");
+				lastActionAt = System.currentTimeMillis();
+			}
 		}
 //		if(code == KeyEvent.VK_ENTER){
 //			client.endTurn();
@@ -856,150 +912,70 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 			mainFrame = (JFrame)e.getSource();
 		}
 
-		if (source.equals(svulloBtn)) {
-			if (svulloBtn.isEnabled()) {
-				character.setText("Svullo");
-			}
+		if (source.equals(svulloBtn) && svulloBtn.isEnabled()) {
+			character.setText("Svullo");
 		}
-		if (source.equals(theRatBtn)) {
-			if (theRatBtn.isEnabled()) {
-				character.setText("TheRat");
-			}
+		if (source.equals(theRatBtn) && theRatBtn.isEnabled()) {
+			character.setText("TheRat");
 		}
-		if (source.equals(tjoPangBtn)) {
-			if (tjoPangBtn.isEnabled()) {
-				character.setText("TjoPang");
-			}
+		if (source.equals(tjoPangBtn) && tjoPangBtn.isEnabled()) {
+			character.setText("TjoPang");
 		}
-		if (source.equals(markisenBtn)) {
-			if (markisenBtn.isEnabled()) {
-				character.setText("Markisen");
-			}
+		if (source.equals(markisenBtn) && markisenBtn.isEnabled()) {
+			character.setText("Markisen");
 		}
-		if (source.equals(hannibalBtn)) {
-			if (hannibalBtn.isEnabled()) {
-				character.setText("Hannibal");
-			}
+		if (source.equals(hannibalBtn) && hannibalBtn.isEnabled()) {
+			character.setText("Hannibal");
 		}
-		if (source.equals(hookBtn)) {
-			if (hookBtn.isEnabled()) {
-				character.setText("Hook");
-			}
+		if (source.equals(hookBtn) && hookBtn.isEnabled()) {
+			character.setText("Hook");
 		}
 
-		if (source.equals(svulloTargetBtn)) {
-			if (svulloTargetBtn.isEnabled()) {
-				svulloTargetBtn.setBackground(Color.RED);
-				theRatTargetBtn.setBackground(Color.WHITE);
-				tjoPangTargetBtn.setBackground(Color.WHITE);
-				markisenTargetBtn.setBackground(Color.WHITE);
-				hannibalTargetBtn.setBackground(Color.WHITE);
-				hookTargetBtn.setBackground(Color.WHITE);
-				svulloTargetBtn.repaint();
-				theRatTargetBtn.repaint();
-				tjoPangTargetBtn.repaint();
-				markisenTargetBtn.repaint();
-				hannibalTargetBtn.repaint();
-				hookTargetBtn.repaint();
-				
-				this.target = svulloTargetBtn.getText();
-				System.out.println(target);
-			}
+		if (source.equals(svulloTargetBtn) && svulloTargetBtn.isEnabled()) {
+			chooseTarget(svulloTargetBtn.getText());
 		}
-		if (source.equals(theRatTargetBtn)) {
-			if (theRatTargetBtn.isEnabled()) {
-				svulloTargetBtn.setBackground(Color.WHITE);
-				theRatTargetBtn.setBackground(Color.RED);
-				tjoPangTargetBtn.setBackground(Color.WHITE);
-				markisenTargetBtn.setBackground(Color.WHITE);
-				hannibalTargetBtn.setBackground(Color.WHITE);
-				hookTargetBtn.setBackground(Color.WHITE);
-				svulloTargetBtn.repaint();
-				theRatTargetBtn.repaint();
-				tjoPangTargetBtn.repaint();
-				markisenTargetBtn.repaint();
-				hannibalTargetBtn.repaint();
-				hookTargetBtn.repaint();
-				this.target = theRatTargetBtn.getText();
-				System.out.println(target);
-			}
+		if (source.equals(theRatTargetBtn) && theRatTargetBtn.isEnabled()) {
+			chooseTarget(theRatTargetBtn.getText());
 		}
-		if (source.equals(tjoPangTargetBtn)) {
-			if (tjoPangTargetBtn.isEnabled()) {
-				svulloTargetBtn.setBackground(Color.WHITE);
-				theRatTargetBtn.setBackground(Color.WHITE);
-				tjoPangTargetBtn.setBackground(Color.RED);
-				markisenTargetBtn.setBackground(Color.WHITE);
-				hannibalTargetBtn.setBackground(Color.WHITE);
-				hookTargetBtn.setBackground(Color.WHITE);
-				svulloTargetBtn.repaint();
-				theRatTargetBtn.repaint();
-				tjoPangTargetBtn.repaint();
-				markisenTargetBtn.repaint();
-				hannibalTargetBtn.repaint();
-				hookTargetBtn.repaint();
-				this.target = tjoPangTargetBtn.getText();
-				System.out.println(target);
-			}
+		if (source.equals(tjoPangTargetBtn) && tjoPangTargetBtn.isEnabled()) {
+			chooseTarget(tjoPangTargetBtn.getText());
 		}
-		if (source.equals(markisenTargetBtn)) {
-			if (markisenTargetBtn.isEnabled()) {
-				svulloTargetBtn.setBackground(Color.WHITE);
-				theRatTargetBtn.setBackground(Color.WHITE);
-				tjoPangTargetBtn.setBackground(Color.WHITE);
-				markisenTargetBtn.setBackground(Color.RED);
-				hannibalTargetBtn.setBackground(Color.WHITE);
-				hookTargetBtn.setBackground(Color.WHITE);
-				svulloTargetBtn.repaint();
-				theRatTargetBtn.repaint();
-				tjoPangTargetBtn.repaint();
-				markisenTargetBtn.repaint();
-				hannibalTargetBtn.repaint();
-				hookTargetBtn.repaint();
-				this.target = markisenTargetBtn.getText();
-				System.out.println(target);
-			}
+		if (source.equals(markisenTargetBtn) && markisenTargetBtn.isEnabled()) {
+			chooseTarget(markisenTargetBtn.getText());
 		}
-		if (source.equals(hannibalTargetBtn)) {
-			if (hannibalTargetBtn.isEnabled()) {
-				svulloTargetBtn.setBackground(Color.WHITE);
-				theRatTargetBtn.setBackground(Color.WHITE);
-				tjoPangTargetBtn.setBackground(Color.WHITE);
-				markisenTargetBtn.setBackground(Color.WHITE);
-				hannibalTargetBtn.setBackground(Color.RED);
-				hookTargetBtn.setBackground(Color.WHITE);
-				svulloTargetBtn.repaint();
-				theRatTargetBtn.repaint();
-				tjoPangTargetBtn.repaint();
-				markisenTargetBtn.repaint();
-				hannibalTargetBtn.repaint();
-				hookTargetBtn.repaint();
-				this.target = hannibalTargetBtn.getText();
-				System.out.println(target);
-			}
+		if (source.equals(hannibalTargetBtn) && hannibalTargetBtn.isEnabled()) {
+			chooseTarget(hannibalTargetBtn.getText());
 		}
-		if (source.equals(hookTargetBtn)) {
-			if (hookTargetBtn.isEnabled()) {
-				svulloTargetBtn.setBackground(Color.WHITE);
-				theRatTargetBtn.setBackground(Color.WHITE);
-				tjoPangTargetBtn.setBackground(Color.WHITE);
-				markisenTargetBtn.setBackground(Color.WHITE);
-				hannibalTargetBtn.setBackground(Color.WHITE);
-				hookTargetBtn.setBackground(Color.RED);
-				svulloTargetBtn.repaint();
-				theRatTargetBtn.repaint();
-				tjoPangTargetBtn.repaint();
-				markisenTargetBtn.repaint();
-				hannibalTargetBtn.repaint();
-				hookTargetBtn.repaint();
-				this.target = hookTargetBtn.getText();
-				System.out.println(target);
-			}
+		if (source.equals(hookTargetBtn) && hookTargetBtn.isEnabled()) {
+			chooseTarget(hookTargetBtn.getText());
 		}
 		if(mainFrame.equals(frame)){
 			frame.requestFocus();
 		}
 
+	}
+
+	/**
+	 * Sets the background color of the specified character to red, and the rest to white.
+	 * @param targetName The getText()-value of the button to set to red.
+	 */
+	private void chooseTarget(String targetName) {
+		svulloTargetBtn.setBackground(targetName == svulloTargetBtn.getText() ? Color.RED : Color.WHITE);
+		theRatTargetBtn.setBackground(targetName == theRatTargetBtn.getText() ? Color.RED : Color.WHITE);
+		tjoPangTargetBtn.setBackground(targetName == tjoPangTargetBtn.getText() ? Color.RED : Color.WHITE);
+		markisenTargetBtn.setBackground(targetName == markisenTargetBtn.getText() ? Color.RED : Color.WHITE);
+		hannibalTargetBtn.setBackground(targetName == hannibalTargetBtn.getText() ? Color.RED : Color.WHITE);
+		hookTargetBtn.setBackground(targetName == hookTargetBtn.getText() ? Color.RED : Color.WHITE);
+
+		svulloTargetBtn.repaint();
+		theRatTargetBtn.repaint();
+		tjoPangTargetBtn.repaint();
+		markisenTargetBtn.repaint();
+		hannibalTargetBtn.repaint();
+		hookTargetBtn.repaint();
+
+		this.target = targetName;
+		System.out.println("Target: " + target);
 	}
 
 	@Override

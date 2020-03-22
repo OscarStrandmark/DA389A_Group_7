@@ -1,23 +1,13 @@
 package gui;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.GroupLayout;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import client.GameClient;
+import client.Sound;
 
 /**
  * Class that creates the menu window for the user. 
@@ -35,8 +25,9 @@ public class MenuFrame implements ActionListener{
 	private	JButton host = new JButton("Host");
 	private	JButton join = new JButton("Join");
 	private	JButton quit = new JButton("Quit");
+	private JButton help = new JButton("Help & Rules");
 	private GridBagLayout layout = new GridBagLayout();	
-	private	JPanel panel = new JPanel(new GridLayout(4,1,10,10));
+	private	JPanel panel = new JPanel(new GridLayout(5,1,10,10));
 	JFrame frame = new JFrame("Main Menu");
 	
 	/**
@@ -53,13 +44,16 @@ public class MenuFrame implements ActionListener{
 		panel.setOpaque(false);
 		panel.add(host);
 		panel.add(join);
+		panel.add(help);
 		panel.add(quit);
+		panel.add(new BackgroundMusicControlPanel());
 	
 		iconPanel.add(panel,new GridBagConstraints());
 		iconPanel.setPreferredSize(new Dimension(800,600));
 		
 		host.addActionListener(this);
 		join.addActionListener(this);
+		help.addActionListener(this);
 		quit.addActionListener(this);
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -94,12 +88,11 @@ public class MenuFrame implements ActionListener{
 			System.out.println("Någon har klickat på 'Quit'"); //Kommentar för White box-testning - Julian Hultgren
 			System.exit(0);
 		}
+		if(e.getSource() == help) {
+			new Rules().showRules();
+		}
 	}	
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				new MenuFrame(new ImageIcon("images/bg.jpg"));
-			}
-		});
+		SwingUtilities.invokeLater(() -> new MenuFrame(new ImageIcon("images/bg.jpg")));
 	}
 }
