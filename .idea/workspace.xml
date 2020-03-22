@@ -3,18 +3,36 @@
   <component name="ChangeListManager">
     <list default="true" id="7c6cb8b4-7db2-46bd-b426-40cb29bb27b1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/production/DA389A_Group_7/client/GameClient$Connection.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/production/DA389A_Group_7/client/GameClient$Connection.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/production/DA389A_Group_7/client/GameClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/production/DA389A_Group_7/client/GameClient.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/production/DA389A_Group_7/client/StartGame$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/production/DA389A_Group_7/client/StartGame.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/production/DA389A_Group_7/client/StartGame.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/production/DA389A_Group_7/client/Tile.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/production/DA389A_Group_7/client/Tile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/production/DA389A_Group_7/gui/ClientFrame.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/production/DA389A_Group_7/gui/ClientFrame.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output/production/DA389A_Group_7/gui/MenuFrame$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/output/production/DA389A_Group_7/gui/MenuFrame.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/production/DA389A_Group_7/gui/MenuFrame.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/Sound.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/Sound.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/StartGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/StartGame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/MenuFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/MenuFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/production/DA389A_Group_7/server/GameServer$ClientHandler$CountDown.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/production/DA389A_Group_7/server/GameServer$ClientHandler$CountDown.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/production/DA389A_Group_7/server/GameServer$ClientHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/production/DA389A_Group_7/server/GameServer$ClientHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/production/DA389A_Group_7/server/GameServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/output/production/DA389A_Group_7/server/GameServer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/GameClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/GameClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/Tile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/ClientFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/ClientFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/Rules.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/Rules.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/GameServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/GameServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -40,10 +58,11 @@
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="project.propCompiler" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RunManager">
-    <configuration name="StartGame" type="Application" factoryName="Application" nameIsGenerated="true">
+    <configuration name="StartGame" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="client.StartGame" />
       <module name="DA389A_Group_7" />
       <extension name="coverage">
@@ -92,42 +111,57 @@
       <screen x="0" y="23" width="1680" height="1027" />
     </state>
     <state x="510" y="202" key="#Project_Structure/0.23.1680.1027@0.23.1680.1027" timestamp="1583861849874" />
-    <state x="374" y="198" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1583862323131">
-      <screen x="0" y="23" width="1680" height="1027" />
+    <state x="427" y="203" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1584472297933">
+      <screen x="0" y="23" width="1920" height="1057" />
     </state>
     <state x="374" y="198" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1680.1027@0.23.1680.1027" timestamp="1583862323131" />
+    <state x="427" y="203" key="#com.intellij.execution.impl.EditConfigurationsDialog/1248.1103.1680.1027/0.23.1920.1057@0.23.1920.1057" timestamp="1584472297933" />
+    <state x="299" y="140" key="CommitChangelistDialog2" timestamp="1584899671120">
+      <screen x="0" y="23" width="1680" height="1027" />
+    </state>
+    <state x="299" y="140" key="CommitChangelistDialog2/0.23.1680.1027@0.23.1680.1027" timestamp="1584899671120" />
     <state x="512" y="253" key="FileChooserDialogImpl" timestamp="1583934889162">
       <screen x="0" y="23" width="1680" height="1027" />
     </state>
     <state x="512" y="253" key="FileChooserDialogImpl/0.23.1680.1027@0.23.1680.1027" timestamp="1583934889162" />
-    <state width="1638" height="266" key="GridCell.Tab.0.bottom" timestamp="1584028702260">
+    <state width="1638" height="231" key="GridCell.Tab.0.bottom" timestamp="1584899680421">
       <screen x="0" y="23" width="1680" height="1027" />
     </state>
-    <state width="1638" height="266" key="GridCell.Tab.0.bottom/0.23.1680.1027@0.23.1680.1027" timestamp="1584028702260" />
-    <state width="1638" height="266" key="GridCell.Tab.0.center" timestamp="1584028702260">
+    <state width="1638" height="231" key="GridCell.Tab.0.bottom/0.23.1680.1027@0.23.1680.1027" timestamp="1584899680421" />
+    <state width="1878" height="173" key="GridCell.Tab.0.bottom/1248.1103.1680.1027/0.23.1920.1057@0.23.1920.1057" timestamp="1584524356967" />
+    <state width="1878" height="275" key="GridCell.Tab.0.bottom/2294.1103.1440.877/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1584450325286" />
+    <state width="1638" height="231" key="GridCell.Tab.0.center" timestamp="1584899680420">
       <screen x="0" y="23" width="1680" height="1027" />
     </state>
-    <state width="1638" height="266" key="GridCell.Tab.0.center/0.23.1680.1027@0.23.1680.1027" timestamp="1584028702260" />
-    <state width="1638" height="266" key="GridCell.Tab.0.left" timestamp="1584028702260">
+    <state width="1638" height="231" key="GridCell.Tab.0.center/0.23.1680.1027@0.23.1680.1027" timestamp="1584899680420" />
+    <state width="1878" height="173" key="GridCell.Tab.0.center/1248.1103.1680.1027/0.23.1920.1057@0.23.1920.1057" timestamp="1584524356966" />
+    <state width="1878" height="275" key="GridCell.Tab.0.center/2294.1103.1440.877/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1584450325285" />
+    <state width="1638" height="231" key="GridCell.Tab.0.left" timestamp="1584899680420">
       <screen x="0" y="23" width="1680" height="1027" />
     </state>
-    <state width="1638" height="266" key="GridCell.Tab.0.left/0.23.1680.1027@0.23.1680.1027" timestamp="1584028702260" />
-    <state width="1638" height="266" key="GridCell.Tab.0.right" timestamp="1584028702260">
+    <state width="1638" height="231" key="GridCell.Tab.0.left/0.23.1680.1027@0.23.1680.1027" timestamp="1584899680420" />
+    <state width="1878" height="173" key="GridCell.Tab.0.left/1248.1103.1680.1027/0.23.1920.1057@0.23.1920.1057" timestamp="1584524356965" />
+    <state width="1878" height="275" key="GridCell.Tab.0.left/2294.1103.1440.877/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1584450325285" />
+    <state width="1638" height="231" key="GridCell.Tab.0.right" timestamp="1584899680420">
       <screen x="0" y="23" width="1680" height="1027" />
     </state>
-    <state width="1638" height="266" key="GridCell.Tab.0.right/0.23.1680.1027@0.23.1680.1027" timestamp="1584028702260" />
-    <state x="398" y="118" key="SettingsEditor" timestamp="1583862292449">
-      <screen x="0" y="23" width="1680" height="1027" />
+    <state width="1638" height="231" key="GridCell.Tab.0.right/0.23.1680.1027@0.23.1680.1027" timestamp="1584899680420" />
+    <state width="1878" height="173" key="GridCell.Tab.0.right/1248.1103.1680.1027/0.23.1920.1057@0.23.1920.1057" timestamp="1584524356967" />
+    <state width="1878" height="275" key="GridCell.Tab.0.right/2294.1103.1440.877/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1584450325286" />
+    <state x="455" y="121" key="SettingsEditor" timestamp="1584472289485">
+      <screen x="0" y="23" width="1920" height="1057" />
     </state>
     <state x="398" y="118" key="SettingsEditor/0.23.1680.1027@0.23.1680.1027" timestamp="1583862292449" />
+    <state x="455" y="121" key="SettingsEditor/1248.1103.1680.1027/0.23.1920.1057@0.23.1920.1057" timestamp="1584472289485" />
     <state x="118" y="97" key="new project wizard" timestamp="1583935378093">
       <screen x="0" y="23" width="1680" height="1027" />
     </state>
     <state x="118" y="97" key="new project wizard/0.23.1680.1027@0.23.1680.1027" timestamp="1583935378093" />
-    <state x="575" y="250" width="670" height="676" key="search.everywhere.popup" timestamp="1584025630668">
-      <screen x="0" y="23" width="1680" height="1027" />
+    <state x="657" y="257" width="766" height="696" key="search.everywhere.popup" timestamp="1584519480480">
+      <screen x="0" y="23" width="1920" height="1057" />
     </state>
     <state x="575" y="250" width="670" height="676" key="search.everywhere.popup/0.23.1680.1027@0.23.1680.1027" timestamp="1584025630668" />
+    <state x="657" y="257" width="766" height="696" key="search.everywhere.popup/1248.1103.1680.1027/0.23.1920.1057@0.23.1920.1057" timestamp="1584519480480" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/DA389A_Group_7$StartGame.ic" NAME="StartGame Coverage Results" MODIFIED="1583862620800" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">

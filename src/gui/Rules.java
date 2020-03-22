@@ -6,8 +6,7 @@ import java.io.*;
 import javax.swing.*;
 
 /**
- * Frame that shows rules of the game, as of now needs rules
- * to be isnerted, this currently holds empty pictures.
+ * Frame that shows rules of the game.
  * @author AevanDino, Oscar Strandmark
  *
  */

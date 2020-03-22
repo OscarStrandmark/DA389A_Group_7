@@ -542,11 +542,8 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 	 */
 	
 	public void updateInfoRutaTreasure(String text) {
-		try {
-			infoArea.replaceRange(text, 392, 412);
-		}catch (IllegalArgumentException e){
-			e.printStackTrace();
-		}
+		infoArea.replaceRange(text, 392, 412);
+		System.out.println("Client: Uppdaterat skattinfo.");
 	}
 	
 	/**
@@ -554,7 +551,6 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 	 */
 	
 	public void moveIcon(String name, int row, int col, boolean visible){
-		
 		switch (name) {
 		case "Svullo":
 			svullo.setLocation((col * 22)-4, (row *20)-25);
@@ -916,150 +912,70 @@ public class ClientFrame extends JPanel implements ActionListener, ViewerListene
 			mainFrame = (JFrame)e.getSource();
 		}
 
-		if (source.equals(svulloBtn)) {
-			if (svulloBtn.isEnabled()) {
-				character.setText("Svullo");
-			}
+		if (source.equals(svulloBtn) && svulloBtn.isEnabled()) {
+			character.setText("Svullo");
 		}
-		if (source.equals(theRatBtn)) {
-			if (theRatBtn.isEnabled()) {
-				character.setText("TheRat");
-			}
+		if (source.equals(theRatBtn) && theRatBtn.isEnabled()) {
+			character.setText("TheRat");
 		}
-		if (source.equals(tjoPangBtn)) {
-			if (tjoPangBtn.isEnabled()) {
-				character.setText("TjoPang");
-			}
+		if (source.equals(tjoPangBtn) && tjoPangBtn.isEnabled()) {
+			character.setText("TjoPang");
 		}
-		if (source.equals(markisenBtn)) {
-			if (markisenBtn.isEnabled()) {
-				character.setText("Markisen");
-			}
+		if (source.equals(markisenBtn) && markisenBtn.isEnabled()) {
+			character.setText("Markisen");
 		}
-		if (source.equals(hannibalBtn)) {
-			if (hannibalBtn.isEnabled()) {
-				character.setText("Hannibal");
-			}
+		if (source.equals(hannibalBtn) && hannibalBtn.isEnabled()) {
+			character.setText("Hannibal");
 		}
-		if (source.equals(hookBtn)) {
-			if (hookBtn.isEnabled()) {
-				character.setText("Hook");
-			}
+		if (source.equals(hookBtn) && hookBtn.isEnabled()) {
+			character.setText("Hook");
 		}
 
-		if (source.equals(svulloTargetBtn)) {
-			if (svulloTargetBtn.isEnabled()) {
-				svulloTargetBtn.setBackground(Color.RED);
-				theRatTargetBtn.setBackground(Color.WHITE);
-				tjoPangTargetBtn.setBackground(Color.WHITE);
-				markisenTargetBtn.setBackground(Color.WHITE);
-				hannibalTargetBtn.setBackground(Color.WHITE);
-				hookTargetBtn.setBackground(Color.WHITE);
-				svulloTargetBtn.repaint();
-				theRatTargetBtn.repaint();
-				tjoPangTargetBtn.repaint();
-				markisenTargetBtn.repaint();
-				hannibalTargetBtn.repaint();
-				hookTargetBtn.repaint();
-				
-				this.target = svulloTargetBtn.getText();
-				System.out.println(target);
-			}
+		if (source.equals(svulloTargetBtn) && svulloTargetBtn.isEnabled()) {
+			chooseTarget(svulloTargetBtn.getText());
 		}
-		if (source.equals(theRatTargetBtn)) {
-			if (theRatTargetBtn.isEnabled()) {
-				svulloTargetBtn.setBackground(Color.WHITE);
-				theRatTargetBtn.setBackground(Color.RED);
-				tjoPangTargetBtn.setBackground(Color.WHITE);
-				markisenTargetBtn.setBackground(Color.WHITE);
-				hannibalTargetBtn.setBackground(Color.WHITE);
-				hookTargetBtn.setBackground(Color.WHITE);
-				svulloTargetBtn.repaint();
-				theRatTargetBtn.repaint();
-				tjoPangTargetBtn.repaint();
-				markisenTargetBtn.repaint();
-				hannibalTargetBtn.repaint();
-				hookTargetBtn.repaint();
-				this.target = theRatTargetBtn.getText();
-				System.out.println(target);
-			}
+		if (source.equals(theRatTargetBtn) && theRatTargetBtn.isEnabled()) {
+			chooseTarget(theRatTargetBtn.getText());
 		}
-		if (source.equals(tjoPangTargetBtn)) {
-			if (tjoPangTargetBtn.isEnabled()) {
-				svulloTargetBtn.setBackground(Color.WHITE);
-				theRatTargetBtn.setBackground(Color.WHITE);
-				tjoPangTargetBtn.setBackground(Color.RED);
-				markisenTargetBtn.setBackground(Color.WHITE);
-				hannibalTargetBtn.setBackground(Color.WHITE);
-				hookTargetBtn.setBackground(Color.WHITE);
-				svulloTargetBtn.repaint();
-				theRatTargetBtn.repaint();
-				tjoPangTargetBtn.repaint();
-				markisenTargetBtn.repaint();
-				hannibalTargetBtn.repaint();
-				hookTargetBtn.repaint();
-				this.target = tjoPangTargetBtn.getText();
-				System.out.println(target);
-			}
+		if (source.equals(tjoPangTargetBtn) && tjoPangTargetBtn.isEnabled()) {
+			chooseTarget(tjoPangTargetBtn.getText());
 		}
-		if (source.equals(markisenTargetBtn)) {
-			if (markisenTargetBtn.isEnabled()) {
-				svulloTargetBtn.setBackground(Color.WHITE);
-				theRatTargetBtn.setBackground(Color.WHITE);
-				tjoPangTargetBtn.setBackground(Color.WHITE);
-				markisenTargetBtn.setBackground(Color.RED);
-				hannibalTargetBtn.setBackground(Color.WHITE);
-				hookTargetBtn.setBackground(Color.WHITE);
-				svulloTargetBtn.repaint();
-				theRatTargetBtn.repaint();
-				tjoPangTargetBtn.repaint();
-				markisenTargetBtn.repaint();
-				hannibalTargetBtn.repaint();
-				hookTargetBtn.repaint();
-				this.target = markisenTargetBtn.getText();
-				System.out.println(target);
-			}
+		if (source.equals(markisenTargetBtn) && markisenTargetBtn.isEnabled()) {
+			chooseTarget(markisenTargetBtn.getText());
 		}
-		if (source.equals(hannibalTargetBtn)) {
-			if (hannibalTargetBtn.isEnabled()) {
-				svulloTargetBtn.setBackground(Color.WHITE);
-				theRatTargetBtn.setBackground(Color.WHITE);
-				tjoPangTargetBtn.setBackground(Color.WHITE);
-				markisenTargetBtn.setBackground(Color.WHITE);
-				hannibalTargetBtn.setBackground(Color.RED);
-				hookTargetBtn.setBackground(Color.WHITE);
-				svulloTargetBtn.repaint();
-				theRatTargetBtn.repaint();
-				tjoPangTargetBtn.repaint();
-				markisenTargetBtn.repaint();
-				hannibalTargetBtn.repaint();
-				hookTargetBtn.repaint();
-				this.target = hannibalTargetBtn.getText();
-				System.out.println(target);
-			}
+		if (source.equals(hannibalTargetBtn) && hannibalTargetBtn.isEnabled()) {
+			chooseTarget(hannibalTargetBtn.getText());
 		}
-		if (source.equals(hookTargetBtn)) {
-			if (hookTargetBtn.isEnabled()) {
-				svulloTargetBtn.setBackground(Color.WHITE);
-				theRatTargetBtn.setBackground(Color.WHITE);
-				tjoPangTargetBtn.setBackground(Color.WHITE);
-				markisenTargetBtn.setBackground(Color.WHITE);
-				hannibalTargetBtn.setBackground(Color.WHITE);
-				hookTargetBtn.setBackground(Color.RED);
-				svulloTargetBtn.repaint();
-				theRatTargetBtn.repaint();
-				tjoPangTargetBtn.repaint();
-				markisenTargetBtn.repaint();
-				hannibalTargetBtn.repaint();
-				hookTargetBtn.repaint();
-				this.target = hookTargetBtn.getText();
-				System.out.println(target);
-			}
+		if (source.equals(hookTargetBtn) && hookTargetBtn.isEnabled()) {
+			chooseTarget(hookTargetBtn.getText());
 		}
 		if(mainFrame.equals(frame)){
 			frame.requestFocus();
 		}
 
+	}
+
+	/**
+	 * Sets the background color of the specified character to red, and the rest to white.
+	 * @param targetName The getText()-value of the button to set to red.
+	 */
+	private void chooseTarget(String targetName) {
+		svulloTargetBtn.setBackground(targetName == svulloTargetBtn.getText() ? Color.RED : Color.WHITE);
+		theRatTargetBtn.setBackground(targetName == theRatTargetBtn.getText() ? Color.RED : Color.WHITE);
+		tjoPangTargetBtn.setBackground(targetName == tjoPangTargetBtn.getText() ? Color.RED : Color.WHITE);
+		markisenTargetBtn.setBackground(targetName == markisenTargetBtn.getText() ? Color.RED : Color.WHITE);
+		hannibalTargetBtn.setBackground(targetName == hannibalTargetBtn.getText() ? Color.RED : Color.WHITE);
+		hookTargetBtn.setBackground(targetName == hookTargetBtn.getText() ? Color.RED : Color.WHITE);
+
+		svulloTargetBtn.repaint();
+		theRatTargetBtn.repaint();
+		tjoPangTargetBtn.repaint();
+		markisenTargetBtn.repaint();
+		hannibalTargetBtn.repaint();
+		hookTargetBtn.repaint();
+
+		this.target = targetName;
+		System.out.println("Target: " + target);
 	}
 
 	@Override

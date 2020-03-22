@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import gui.ServerFrame;
 
@@ -21,9 +22,9 @@ public class GameServer implements Runnable{
 
 	private ServerSocket serverSocket;
 	private Thread serverThread = new Thread(this);
-	private HashMap<String, ClientHandler> clientMap = new HashMap<String, ClientHandler>();
-	private HashMap<Integer, String> clientMapid = new HashMap<Integer, String>();
-	private HashMap<String, client.Character> characterMap = new HashMap<String, client.Character>();
+	private HashMap<String, ClientHandler> clientMap = new HashMap<>();
+	private HashMap<Integer, String> clientMapid = new HashMap<>();
+	private HashMap<String, client.Character> characterMap = new HashMap<>();
 	private Random rad = new Random();
 	private ServerFrame ui;
 	
@@ -86,12 +87,14 @@ public class GameServer implements Runnable{
 		//Stop accepting connections to gameserver.
 		serverThread.suspend();
 
-		System.out.println("Server: starta spelet på servern "+id);
+		System.out.println("Server: starta spelet på servern " + id);
+		System.out.println("Server: Spelet startat för spelarna " + clientMap.values().stream().map(c -> c.username).collect(Collectors.joining(", ")));
+
 		for(int i = 1; i < id; i++){
 			clientMap.get(clientMapid.get(i)).createCharacter(clientMapid.get(i));
 			clientMap.get(clientMapid.get(i)).startCountdown();
 		}
-		clientMap.get(clientMapid.get(1)).clientsTurn(true);;
+		clientMap.get(clientMapid.get(1)).clientsTurn(true);
 	}
 	
 	/**
