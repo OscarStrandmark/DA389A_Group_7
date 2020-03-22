@@ -458,11 +458,6 @@ public class GameClient implements Serializable{
 								listener.setIconSleep(character.getCharacterName(), true);
 							}
 						}
-						if(character.hasTreasure()){
-							for(ViewerListener listener: listeners){
-//								listener.updateInfoRutaTreasure(character.getName() + "\n");
-							}
-						}
 						System.out.println("CLIENT: mottaget Character-objekts sleeping: " + character.sleeping());
 						updateCharacter(character);
 					}
